@@ -8,7 +8,9 @@
 
 /* eslint-env node */
 const ESLintPlugin = require('eslint-webpack-plugin')
-const { configure } = require('quasar/wrappers');
+const {
+  configure
+} = require('quasar/wrappers');
 
 module.exports = configure(function (ctx) {
   return {
@@ -41,8 +43,9 @@ module.exports = configure(function (ctx) {
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
+      // 'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
+      'material-icons-outlined',
     ],
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
@@ -70,7 +73,9 @@ module.exports = configure(function (ctx) {
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpack(chain) {
         chain.plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js', 'vue'] }])
+          .use(ESLintPlugin, [{
+            extensions: ['js', 'vue']
+          }])
       },
     },
 
@@ -135,7 +140,9 @@ module.exports = configure(function (ctx) {
 
       chainWebpackWebserver(chain) {
         chain.plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }])
+          .use(ESLintPlugin, [{
+            extensions: ['js']
+          }])
       },
 
       middlewares: [
@@ -153,7 +160,9 @@ module.exports = configure(function (ctx) {
       // if using workbox in InjectManifest mode
       chainWebpackCustomSW(chain) {
         chain.plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }])
+          .use(ESLintPlugin, [{
+            extensions: ['js']
+          }])
       },
 
       manifest: {
@@ -164,8 +173,7 @@ module.exports = configure(function (ctx) {
         orientation: 'portrait',
         background_color: '#ffffff',
         theme_color: '#027be3',
-        icons: [
-          {
+        icons: [{
             src: 'icons/icon-128x128.png',
             sizes: '128x128',
             type: 'image/png'
@@ -230,13 +238,17 @@ module.exports = configure(function (ctx) {
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpackMain(chain) {
         chain.plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }])
+          .use(ESLintPlugin, [{
+            extensions: ['js']
+          }])
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
       chainWebpackPreload(chain) {
         chain.plugin('eslint-webpack-plugin')
-          .use(ESLintPlugin, [{ extensions: ['js'] }])
+          .use(ESLintPlugin, [{
+            extensions: ['js']
+          }])
       },
     }
   }

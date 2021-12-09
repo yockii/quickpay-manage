@@ -12,8 +12,31 @@ export default {
   confirm: 'Confirm',
   loginFailed: 'Sign In Failed',
   navigationCaption: 'Navigation',
+  operation: 'Operations',
+  search: 'Search',
+  add: 'Add',
+  success: 'Success',
+  duplicate: 'Data Duplicate',
+  showDetail: 'Show Detail',
   navigation: {
     merchant: 'Merchant',
-    merchantCaption: 'Merchant info, secret & callback url etc.'
+    merchantCaption: 'Merchant info, secret & callback url etc.',
+    channel: 'Channel',
+    channelCaption: 'Pay in&out channel, sub channel manage',
+    order: 'Order',
+    orderCaption: 'Pay in & out orders, includes manual add or minus balance order',
+    user: 'User',
+    userCaption: 'User for background manage and role dispatch',
+    authorize: 'Authorize',
+    authorizeCaption: 'Role and Resource Dispatch Manage'
+  },
+  merchantField: {
+    id: 'Merchant ID',
+    name: 'Merchant Name',
+    balance: 'Available Balance',
+    frozen: 'Frozen Balance',
+    totalIncome: 'Total Income(With Fee)',
+    totalRealIncome: 'Total Income',
+    totalPayout: 'Total Payout'
   }
 }

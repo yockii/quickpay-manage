@@ -1,14 +1,18 @@
-
-const routes = [
-  {
+const routes = [{
     path: '/',
     redirect: '/login'
   },
   {
     path: '/main',
     component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/Index.vue') }
+    children: [{
+        path: '',
+        component: () => import('pages/Index.vue')
+      },
+      {
+        path: '/merchant',
+        component: () => import('pages/Merchant.vue')
+      }
     ]
   },
   {

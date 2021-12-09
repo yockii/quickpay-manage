@@ -1,5 +1,5 @@
 <template>
-  <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
+  <div class="flex text-center text-white fullscreen bg-blue q-pa-md flex-center">
     <div>
       <div style="font-size: 30vh">
         404
@@ -14,7 +14,7 @@
         color="white"
         text-color="blue"
         unelevated
-        to="/"
+        to="/main"
         label="Go Home"
         no-caps
       />
