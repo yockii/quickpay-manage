@@ -2,12 +2,12 @@
   <q-page class="q-pa-md q-gutter-md">
     <q-breadcrumbs>
       <q-breadcrumbs-el icon="home" />
-      <q-breadcrumbs-el :label="$t('navigation.merchant')" icon="shopping_basket" />
+      <q-breadcrumbs-el :label="$t('navigation.channel')" icon="streetview" />
     </q-breadcrumbs>
     <!-- 筛选条件 -->
     <div class="items-start q-gutter-md row">
-      <q-input v-model="condition.id" :label="$t('merchantField.id')" />
-      <q-input v-model="condition.name" :label="$t('merchantField.name')" />
+      <q-input v-model="condition.code" :label="$t('channel.code')" />
+      <q-input v-model="condition.name" :label="$t('channel.name')" />
       <!-- <q-space /> -->
       <q-btn class="self-end" icon="search" @click="getData({ pagination })">
         <q-tooltip>{{ $t("search") }}</q-tooltip>
@@ -60,6 +60,16 @@
               <q-tooltip>{{ $t("update") }}</q-tooltip>
             </q-btn>
 
+            <q-btn
+              flat
+              color="primary"
+              round
+              icon="redo"
+              :to="`/subChannel?channelId=${props.row.id}&channelCode=${props.row.code}`"
+            >
+              <q-tooltip>{{ $t("showSubChannel") }}</q-tooltip>
+            </q-btn>
+
             <q-btn flat color="negative" round icon="delete_forever">
               <q-tooltip>{{ $t("delete") }}</q-tooltip>
               <q-popup-proxy>
@@ -91,7 +101,15 @@
         <div class="text-h6">{{ $t("add") }}</div>
       </q-card-section>
       <q-card-section>
-        <q-input v-model="instance.name" :label="$t('merchantField.name')" />
+        <q-input v-model="instance.name" :label="$t('channel.name')" />
+        <q-input v-model="instance.code" :label="$t('channel.code')" />
+        <q-select
+          :label="$t('channel.type')"
+          v-model="instance.type"
+          :options="typeOptions"
+          emit-value
+          map-options
+        />
       </q-card-section>
       <q-card-actions align="right">
         <q-btn flat :label="$t('cancel')" v-close-popup />
@@ -108,16 +126,7 @@
       <q-card-section>
         <div class="row">
           <div class="col-6">
-            <q-field :label="$t('merchantField.id')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.id }}
-                </div>
-              </template>
-            </q-field>
-          </div>
-          <div class="col-6">
-            <q-field :label="$t('merchantField.name')" stack-label>
+            <q-field :label="$t('channel.name')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.name }}
@@ -126,34 +135,36 @@
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.callbackUrl')" stack-label>
+            <q-field :label="$t('channel.code')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.callbackUrl }}
+                  {{ instance.code }}
                 </div>
               </template>
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.redirectUrl')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.redirectUrl }}
-                </div>
-              </template>
-            </q-field>
+            <q-select
+              readonly
+              :label="$t('channel.type')"
+              v-model="instance.type"
+              :options="typeOptions"
+              emit-value
+              map-options
+            />
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.secret')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.secret }}
-                </div>
-              </template>
-            </q-field>
+            <q-select
+              readonly
+              :label="$t('channel.state')"
+              v-model="instance.state"
+              :options="stateOptions"
+              emit-value
+              map-options
+            />
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.balance')" stack-label>
+            <q-field :label="$t('channel.balance')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.balance || 0.0 }}
@@ -162,7 +173,7 @@
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.frozen')" stack-label>
+            <q-field :label="$t('channel.frozen')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.frozen || 0.0 }}
@@ -171,7 +182,7 @@
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.totalIncome')" stack-label>
+            <q-field :label="$t('channel.totalIncome')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.totalIncome || 0.0 }}
@@ -180,7 +191,7 @@
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.totalRealIncome')" stack-label>
+            <q-field :label="$t('channel.totalRealIncome')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.totalRealIncome || 0.0 }}
@@ -189,7 +200,7 @@
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.totalPayout')" stack-label>
+            <q-field :label="$t('channel.totalPayout')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.totalPayout || 0.0 }}
@@ -213,37 +224,28 @@
       <q-card-section>
         <div class="row">
           <div class="col-6">
-            <q-field :label="$t('merchantField.id')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.id }}
-                </div>
-              </template>
-            </q-field>
+            <q-input :label="$t('channel.name')" v-model="instance.name" />
           </div>
           <div class="col-6">
-            <q-input :label="$t('merchantField.name')" v-model="instance.name" />
+            <q-input :label="$t('channel.code')" v-model="instance.code" />
           </div>
           <div class="col-6">
-            <q-input
-              :label="$t('merchantField.callbackUrl')"
-              v-model="instance.callbackUrl"
+            <q-select
+              :label="$t('channel.type')"
+              v-model="instance.type"
+              :options="typeOptions"
+              emit-value
+              map-options
             />
           </div>
           <div class="col-6">
-            <q-field
-              :label="$t('merchantField.redirectUrl')"
-              v-model="instance.redirectUrl"
+            <q-select
+              :label="$t('channel.state')"
+              v-model="instance.state"
+              :options="stateOptions"
+              emit-value
+              map-options
             />
-          </div>
-          <div class="col-6">
-            <q-field :label="$t('merchantField.secret')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.secret }}
-                </div>
-              </template>
-            </q-field>
           </div>
         </div>
       </q-card-section>
@@ -257,81 +259,96 @@
 
 <script>
 import { defineComponent, ref, onMounted } from "vue";
-import { merchant } from "../api/merchant";
+import { channel } from "../api/channel";
 import { useI18n } from "vue-i18n";
 import { useQuasar } from "quasar";
 export default defineComponent({
-  name: "PageMerchant",
+  name: "PageChannel",
   setup() {
     const { t: $t } = useI18n();
     const $q = useQuasar();
 
     const columns = [
       {
-        name: "id",
-        label: $t("merchantField.id"),
-        align: "center",
-        field: (row) => row.id,
-        format: (val) => `${val}`,
-      },
-      {
         name: "name",
-        label: $t("merchantField.name"),
+        label: $t("channel.name"),
         align: "center",
         field: (row) => row.name,
         format: (val) => `${val}`,
       },
       {
+        name: "name",
+        label: $t("channel.code"),
+        align: "center",
+        field: (row) => row.code,
+        format: (val) => `${val}`,
+      },
+      {
+        name: "type",
+        label: $t("channel.type"),
+        align: "center",
+        field: (row) => row.type,
+        format: (val) => (val == 1 ? $t("channel.type1") : $t("channel.type2")),
+      },
+      {
         name: "balance",
-        label: $t("merchantField.balance"),
+        label: $t("channel.balance"),
         align: "center",
         field: (row) => row.balance,
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
       {
         name: "frozen",
-        label: $t("merchantField.frozen"),
+        label: $t("channel.frozen"),
         align: "center",
         field: (row) => row.frozen,
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
       {
         name: "totalIncome",
-        label: $t("merchantField.totalIncome"),
+        label: $t("channel.totalIncome"),
         align: "center",
         field: (row) => row.totalIncome,
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
       {
         name: "totalRealIncome",
-        label: $t("merchantField.totalRealIncome"),
+        label: $t("channel.totalRealIncome"),
         align: "center",
         field: (row) => row.totalRealIncome,
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
       {
         name: "totalPayout",
-        label: $t("merchantField.totalPayout"),
+        label: $t("channel.totalPayout"),
         align: "center",
         field: (row) => row.totalPayout,
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
+      {
+        name: "state",
+        label: $t("channel.state"),
+        align: "center",
+        field: (row) => row.state,
+        format: (val) => (val == 1 ? $t("available") : $t("unavailable")),
+      },
     ];
     const condition = ref({
-      id: "",
+      code: "",
       name: "",
+      type: 0,
     });
     const instance = ref({
       id: "",
       name: "",
+      code: "",
+      type: 1,
+      state: 1,
       balance: 0,
       frozen: 0,
       totalIncome: 0,
       totalRealIncome: 0,
       totalPayout: 0,
-      callbackUrl: "",
-      redirectUrl: "",
-      secret: "",
     });
     const rows = ref([]);
     const loading = ref(false);
@@ -345,7 +362,7 @@ export default defineComponent({
       const { page, rowsPerPage } = props.pagination;
       const offset = (page - 1) * rowsPerPage;
       try {
-        const resp = await merchant.paginate({
+        const resp = await channel.paginate({
           offset,
           limit: rowsPerPage,
           id: condition.value.id,
@@ -365,14 +382,14 @@ export default defineComponent({
     function resetInstance() {
       instance.value.id = "";
       instance.value.name = "";
+      instance.value.code = "";
+      instance.value.type = 1;
+      instance.value.state = 0;
       instance.value.balance = 0;
       instance.value.frozen = 0;
       instance.value.totalIncome = 0;
       instance.value.totalRealIncome = 0;
       instance.value.totalPayout = 0;
-      instance.value.callbackUrl = "";
-      instance.value.redirectUrl = "";
-      instance.value.secret = "";
     }
 
     const dialogAdd = ref(false);
@@ -381,11 +398,11 @@ export default defineComponent({
       dialogAdd.value = true;
     }
     async function add() {
-      if (instance.value.name === "") {
+      if (instance.value.name === "" || instance.value.code === "") {
         return;
       }
       try {
-        const resp = await merchant.add(instance.value);
+        const resp = await channel.add(instance.value);
         if (resp.code === 0) {
           $q.dialog({ message: $t("success") });
           dialogAdd.value = false;
@@ -417,7 +434,7 @@ export default defineComponent({
         instance.value.totalIncome = 0;
         instance.value.totalRealIncome = 0;
         instance.value.totalPayout = 0;
-        const resp = await merchant.update(instance.value);
+        const resp = await channel.update(instance.value);
         if (resp.code === 0) {
           $q.dialog({ message: $t("success") });
           dialogUpdate.value = false;
@@ -432,7 +449,7 @@ export default defineComponent({
     async function remove(id) {
       if (id) {
         try {
-          const resp = await merchant.delete(id);
+          const resp = await channel.delete(id);
           if (resp.code === 0) {
             $q.dialog({ message: $t("success") });
             getData({ pagination: pagination.value });
@@ -443,6 +460,15 @@ export default defineComponent({
         }
       }
     }
+
+    const typeOptions = ref([
+      { label: $t("channel.type1"), value: 1 },
+      { label: $t("channel.type2"), value: 2 },
+    ]);
+    const stateOptions = ref([
+      { label: $t("available"), value: 1 },
+      { label: $t("unavailable"), value: -1 },
+    ]);
 
     onMounted(() => {
       getData({ pagination: pagination.value });
@@ -464,6 +490,8 @@ export default defineComponent({
       openUpdateDialog,
       update,
       remove,
+      typeOptions,
+      stateOptions,
     };
   },
 });

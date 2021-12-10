@@ -20,6 +20,15 @@ const user = {
   },
   paginate: function (params) {
     return api.get('/api/v1/user/list', { params })
+  },
+  updatePwd: function (data) {
+    return api.put('/api/v1/user/pwd', data)
+  },
+  getRoleIds: function (id) {
+    return api.get(`/api/v1/user/roleIds/${id}`)
+  },
+  dispatchRoles: function (data) {
+    return api.post('/api/v1/user/dispatch', data)
   }
 }
 

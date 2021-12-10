@@ -59,7 +59,7 @@ export default defineComponent({
       },
       {
         title: $t("navigation.order"),
-        caption:$t("navigation.orderCaption"),
+        caption: $t("navigation.orderCaption"),
         icon: "reorder",
         to: "/order",
       },
@@ -73,7 +73,7 @@ export default defineComponent({
         title: $t("navigation.authorize"),
         caption: $t("navigation.authorizeCaption"),
         icon: "verified_user",
-        link: "/role",
+        to: "/role",
       },
     ];
 

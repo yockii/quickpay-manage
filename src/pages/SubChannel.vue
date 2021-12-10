@@ -2,12 +2,15 @@
   <q-page class="q-pa-md q-gutter-md">
     <q-breadcrumbs>
       <q-breadcrumbs-el icon="home" />
-      <q-breadcrumbs-el :label="$t('navigation.merchant')" icon="shopping_basket" />
+      <q-breadcrumbs-el
+        :label="$t('navigation.channel') + ': ' + channelCode"
+        icon="streetview"
+      />
+      <q-breadcrumbs-el :label="$t('navigation.subChannel')" icon="account_tree" />
     </q-breadcrumbs>
     <!-- 筛选条件 -->
     <div class="items-start q-gutter-md row">
-      <q-input v-model="condition.id" :label="$t('merchantField.id')" />
-      <q-input v-model="condition.name" :label="$t('merchantField.name')" />
+      <q-input v-model="condition.subName" :label="$t('subChannel.subName')" />
       <!-- <q-space /> -->
       <q-btn class="self-end" icon="search" @click="getData({ pagination })">
         <q-tooltip>{{ $t("search") }}</q-tooltip>
@@ -86,12 +89,71 @@
   </q-page>
 
   <q-dialog v-model="dialogAdd">
-    <q-card style="width: 300px" class="q-px-sm q-pb-md">
+    <q-card style="width: 600px; max-width: 80vw" class="q-px-sm q-pb-md">
       <q-card-section>
         <div class="text-h6">{{ $t("add") }}</div>
       </q-card-section>
       <q-card-section>
-        <q-input v-model="instance.name" :label="$t('merchantField.name')" />
+        <div class="row">
+          <q-input
+            class="col-6"
+            v-model="instance.subName"
+            :label="$t('subChannel.subName')"
+          />
+          <q-input
+            class="col-6"
+            v-model.number="instance.maxAmount"
+            :label="$t('subChannel.maxAmount')"
+          />
+          <q-input
+            class="col-6"
+            v-model.number="instance.minAmount"
+            :label="$t('subChannel.minAmount')"
+          />
+          <q-input
+            class="col-6"
+            v-model.number="instance.feeRate"
+            :label="$t('subChannel.feeRate')"
+          />
+          <q-input
+            class="col-6"
+            v-model.number="instance.feeFixed"
+            :label="$t('subChannel.feeFixed')"
+          />
+          <q-input
+            class="col-6"
+            v-model.number="instance.dailyLimit"
+            :label="$t('subChannel.dailyLimit')"
+          />
+          <q-input
+            class="col-6"
+            v-model.number="instance.dailyAmount"
+            :label="$t('subChannel.dailyAmount')"
+          />
+          <q-input
+            class="col-6"
+            v-model="instance.merchantNo"
+            :label="$t('subChannel.merchantNo')"
+          />
+          <q-input
+            class="col-6"
+            v-model="instance.secretKey"
+            :label="$t('subChannel.secretKey')"
+          />
+          <q-input
+            class="col-6"
+            v-model="instance.remark"
+            :label="$t('subChannel.remark')"
+          />
+          <q-select
+            class="col-6"
+            :label="$t('subChannel.state')"
+            v-model="instance.state"
+            :options="stateOptions"
+            emit-value
+            map-options
+          />
+        </div>
       </q-card-section>
       <q-card-actions align="right">
         <q-btn flat :label="$t('cancel')" v-close-popup />
@@ -108,16 +170,7 @@
       <q-card-section>
         <div class="row">
           <div class="col-6">
-            <q-field :label="$t('merchantField.id')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.id }}
-                </div>
-              </template>
-            </q-field>
-          </div>
-          <div class="col-6">
-            <q-field :label="$t('merchantField.name')" stack-label>
+            <q-field :label="$t('subChannel.subName')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.name }}
@@ -126,73 +179,74 @@
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.callbackUrl')" stack-label>
+            <q-field :label="$t('subChannel.merchantNo')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.callbackUrl }}
+                  {{ instance.merchantNo }}
                 </div>
               </template>
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.redirectUrl')" stack-label>
+            <q-select
+              readonly
+              :label="$t('subChannel.state')"
+              v-model="instance.state"
+              :options="stateOptions"
+              emit-value
+              map-options
+            />
+          </div>
+          <div class="col-6">
+            <q-field :label="$t('subChannel.maxAmount')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.redirectUrl }}
+                  {{ instance.maxAmount || 0.0 }}
                 </div>
               </template>
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.secret')" stack-label>
+            <q-field :label="$t('subChannel.minAmount')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.secret }}
+                  {{ instance.minAmount || 0.0 }}
                 </div>
               </template>
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.balance')" stack-label>
+            <q-field :label="$t('subChannel.feeRate')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.balance || 0.0 }}
+                  {{ instance.feeRate || 0.0 }}
                 </div>
               </template>
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.frozen')" stack-label>
+            <q-field :label="$t('subChannel.feeFixed')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.frozen || 0.0 }}
+                  {{ instance.feeFixed || 0.0 }}
                 </div>
               </template>
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.totalIncome')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.totalIncome || 0.0 }}
-                </div>
-              </template>
-            </q-field>
-          </div>
-          <div class="col-6">
-            <q-field :label="$t('merchantField.totalRealIncome')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.totalRealIncome || 0.0 }}
-                </div>
-              </template>
-            </q-field>
-          </div>
-          <div class="col-6">
-            <q-field :label="$t('merchantField.totalPayout')" stack-label>
+            <q-field :label="$t('subChannel.dailyLimit')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.totalPayout || 0.0 }}
+                </div>
+              </template>
+            </q-field>
+          </div>
+          <div class="col-6">
+            <q-field :label="$t('subChannel.dailyAmount')" stack-label>
+              <template v-slot:control>
+                <div class="self-center full-width no-outline" tabindex="0">
+                  {{ instance.dailyAmount || 0.0 }}
                 </div>
               </template>
             </q-field>
@@ -213,37 +267,61 @@
       <q-card-section>
         <div class="row">
           <div class="col-6">
-            <q-field :label="$t('merchantField.id')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.id }}
-                </div>
-              </template>
-            </q-field>
+            <q-input :label="$t('subChannel.subName')" v-model="instance.subName" />
           </div>
           <div class="col-6">
-            <q-input :label="$t('merchantField.name')" v-model="instance.name" />
+            <q-input :label="$t('subChannel.merchantNo')" v-model="instance.merchantNo" />
+          </div>
+          <div class="col-6">
+            <q-input :label="$t('subChannel.secretKey')" v-model="instance.secretKey" />
+          </div>
+          <div class="col-6">
+            <q-input :label="$t('subChannel.remark')" v-model="instance.remark" />
           </div>
           <div class="col-6">
             <q-input
-              :label="$t('merchantField.callbackUrl')"
-              v-model="instance.callbackUrl"
+              :label="$t('subChannel.maxAmount')"
+              v-model.number="instance.maxAmount"
             />
           </div>
           <div class="col-6">
-            <q-field
-              :label="$t('merchantField.redirectUrl')"
-              v-model="instance.redirectUrl"
+            <q-input
+              :label="$t('subChannel.minAmount')"
+              v-model.number="instance.minAmount"
             />
           </div>
           <div class="col-6">
-            <q-field :label="$t('merchantField.secret')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.secret }}
-                </div>
-              </template>
-            </q-field>
+            <q-input
+              :label="$t('subChannel.feeRate')"
+              v-model.number="instance.feeRate"
+            />
+          </div>
+          <div class="col-6">
+            <q-input
+              :label="$t('subChannel.feeFixed')"
+              v-model.number="instance.feeFixed"
+            />
+          </div>
+          <div class="col-6">
+            <q-input
+              :label="$t('subChannel.dailyLimit')"
+              v-model.number="instance.dailyLimit"
+            />
+          </div>
+          <div class="col-6">
+            <q-input
+              :label="$t('subChannel.dailyAmount')"
+              v-model.number="instance.dailyAmount"
+            />
+          </div>
+          <div class="col-6">
+            <q-select
+              :label="$t('channel.state')"
+              v-model="instance.state"
+              :options="stateOptions"
+              emit-value
+              map-options
+            />
           </div>
         </div>
       </q-card-section>
@@ -257,81 +335,101 @@
 
 <script>
 import { defineComponent, ref, onMounted } from "vue";
-import { merchant } from "../api/merchant";
+import { subChannel } from "../api/subChannel";
 import { useI18n } from "vue-i18n";
 import { useQuasar } from "quasar";
+import { useRoute } from "vue-router";
 export default defineComponent({
-  name: "PageMerchant",
+  name: "PageSubChannel",
   setup() {
     const { t: $t } = useI18n();
     const $q = useQuasar();
+    const $route = useRoute();
 
     const columns = [
       {
-        name: "id",
-        label: $t("merchantField.id"),
+        name: "subName",
+        label: $t("subChannel.subName"),
         align: "center",
-        field: (row) => row.id,
+        field: (row) => row.subName,
         format: (val) => `${val}`,
       },
       {
-        name: "name",
-        label: $t("merchantField.name"),
+        name: "merchantNo",
+        label: $t("subChannel.merchantNo"),
         align: "center",
-        field: (row) => row.name,
+        field: (row) => row.merchantNo,
         format: (val) => `${val}`,
       },
       {
-        name: "balance",
-        label: $t("merchantField.balance"),
+        name: "maxAmount",
+        label: $t("subChannel.maxAmount"),
         align: "center",
-        field: (row) => row.balance,
-        format: (val) => (val ? `${val / 100}` : "0.00"),
+        field: (row) => row.maxAmount,
+        format: (val) => `${val}`,
       },
       {
-        name: "frozen",
-        label: $t("merchantField.frozen"),
+        name: "minAmount",
+        label: $t("subChannel.minAmount"),
         align: "center",
-        field: (row) => row.frozen,
-        format: (val) => (val ? `${val / 100}` : "0.00"),
+        field: (row) => row.minAmount,
+        format: (val) => `${val}`,
       },
       {
-        name: "totalIncome",
-        label: $t("merchantField.totalIncome"),
+        name: "feeRate",
+        label: $t("subChannel.feeRate"),
         align: "center",
-        field: (row) => row.totalIncome,
-        format: (val) => (val ? `${val / 100}` : "0.00"),
+        field: (row) => row.feeRate,
+        format: (val) => `${val}%`,
       },
       {
-        name: "totalRealIncome",
-        label: $t("merchantField.totalRealIncome"),
+        name: "feeFixed",
+        label: $t("subChannel.feeFixed"),
         align: "center",
-        field: (row) => row.totalRealIncome,
-        format: (val) => (val ? `${val / 100}` : "0.00"),
+        field: (row) => row.feeFixed,
+        format: (val) => `${val}`,
       },
       {
-        name: "totalPayout",
-        label: $t("merchantField.totalPayout"),
+        name: "dailyLimit",
+        label: $t("subChannel.dailyLimit"),
         align: "center",
-        field: (row) => row.totalPayout,
-        format: (val) => (val ? `${val / 100}` : "0.00"),
+        field: (row) => row.dailyLimit,
+        format: (val) => `${val}`,
+      },
+      {
+        name: "dailyAmount",
+        label: $t("subChannel.dailyAmount"),
+        align: "center",
+        field: (row) => row.dailyAmount,
+        format: (val) => `${val}`,
+      },
+      {
+        name: "state",
+        label: $t("subChannel.state"),
+        align: "center",
+        field: (row) => row.state,
+        format: (val) => (val == 1 ? $t("available") : $t("unavailable")),
       },
     ];
     const condition = ref({
-      id: "",
-      name: "",
+      channelId: "",
+      subName: "",
+      state: 0,
     });
     const instance = ref({
       id: "",
-      name: "",
-      balance: 0,
-      frozen: 0,
-      totalIncome: 0,
-      totalRealIncome: 0,
-      totalPayout: 0,
-      callbackUrl: "",
-      redirectUrl: "",
-      secret: "",
+      channelId: "",
+      subName: "",
+      merchantNo: "",
+      secretKey: "",
+      remark: "",
+      state: 1,
+      maxAmount: 1,
+      minAmount: 0,
+      feeRate: 0.0,
+      feeFixed: 0,
+      dailyLimit: 0,
+      dailyAmount: 0,
     });
     const rows = ref([]);
     const loading = ref(false);
@@ -345,7 +443,7 @@ export default defineComponent({
       const { page, rowsPerPage } = props.pagination;
       const offset = (page - 1) * rowsPerPage;
       try {
-        const resp = await merchant.paginate({
+        const resp = await subChannel.paginate({
           offset,
           limit: rowsPerPage,
           id: condition.value.id,
@@ -353,6 +451,13 @@ export default defineComponent({
         });
         if (resp.code === 0) {
           rows.value = resp.data.items || [];
+          rows.value.forEach((o) => {
+            o.maxAmount = o.maxAmount ? o.maxAmount / 100 : 0;
+            o.minAmount = o.minAmount ? o.minAmount / 100 : 0;
+            o.feeFixed = o.feeFixed ? o.feeFixed / 100 : 0;
+            o.dailyLimit = o.dailyLimit ? o.dailyLimit / 100 : 0;
+            o.dailyAmount = o.dailyAmount ? o.dailyAmount / 100 : 0;
+          });
           pagination.value.page = page;
           pagination.value.rowsPerPage = rowsPerPage;
           pagination.value.rowsNumber = resp.data.total;
@@ -364,15 +469,25 @@ export default defineComponent({
 
     function resetInstance() {
       instance.value.id = "";
-      instance.value.name = "";
-      instance.value.balance = 0;
-      instance.value.frozen = 0;
-      instance.value.totalIncome = 0;
-      instance.value.totalRealIncome = 0;
-      instance.value.totalPayout = 0;
-      instance.value.callbackUrl = "";
-      instance.value.redirectUrl = "";
-      instance.value.secret = "";
+      instance.value.subName = "";
+      instance.value.merchantNo = "";
+      instance.value.secretKey = "";
+      instance.value.remark = "";
+      instance.value.state = 1;
+      instance.value.maxAmount = 0;
+      instance.value.minAmount = 0;
+      instance.value.feeRate = 0.0;
+      instance.value.feeFixed = 0;
+      instance.value.dailyLimit = 0;
+      instance.value.dailyAmount = 0;
+    }
+
+    function dealAmount(o) {
+      o.maxAmount = parseInt(o.maxAmount * 100);
+      o.minAmount = parseInt(o.minAmount * 100);
+      o.feeFixed = parseInt(o.feeFixed * 100);
+      o.dailyLimit = parseInt(o.dailyLimit * 100);
+      o.dailyAmount = parseInt(o.dailyAmount * 100);
     }
 
     const dialogAdd = ref(false);
@@ -381,11 +496,18 @@ export default defineComponent({
       dialogAdd.value = true;
     }
     async function add() {
-      if (instance.value.name === "") {
+      if (
+        instance.value.subName === "" ||
+        instance.value.merchantNo === "" ||
+        instance.value.secretKey === ""
+      ) {
         return;
       }
       try {
-        const resp = await merchant.add(instance.value);
+        const obj = {};
+        Object.assign(obj, instance.value);
+        dealAmount(obj);
+        const resp = await subChannel.add(obj);
         if (resp.code === 0) {
           $q.dialog({ message: $t("success") });
           dialogAdd.value = false;
@@ -412,12 +534,10 @@ export default defineComponent({
     }
     async function update() {
       try {
-        instance.value.balance = 0;
-        instance.value.frozen = 0;
-        instance.value.totalIncome = 0;
-        instance.value.totalRealIncome = 0;
-        instance.value.totalPayout = 0;
-        const resp = await merchant.update(instance.value);
+        const obj = {};
+        Object.assign(obj, instance.value);
+        dealAmount(obj);
+        const resp = await subChannel.update(obj);
         if (resp.code === 0) {
           $q.dialog({ message: $t("success") });
           dialogUpdate.value = false;
@@ -432,7 +552,7 @@ export default defineComponent({
     async function remove(id) {
       if (id) {
         try {
-          const resp = await merchant.delete(id);
+          const resp = await subChannel.delete(id);
           if (resp.code === 0) {
             $q.dialog({ message: $t("success") });
             getData({ pagination: pagination.value });
@@ -444,7 +564,16 @@ export default defineComponent({
       }
     }
 
+    const stateOptions = ref([
+      { label: $t("available"), value: 1 },
+      { label: $t("unavailable"), value: -1 },
+    ]);
+
+    const channelCode = ref("");
     onMounted(() => {
+      condition.value.channelId = $route.query.channelId;
+      instance.value.channelId = $route.query.channelId;
+      channelCode.value = $route.query.channelCode;
       getData({ pagination: pagination.value });
     });
     return {
@@ -464,6 +593,8 @@ export default defineComponent({
       openUpdateDialog,
       update,
       remove,
+      stateOptions,
+      channelCode,
     };
   },
 });

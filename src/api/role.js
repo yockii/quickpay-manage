@@ -17,6 +17,12 @@ const role = {
   },
   paginate: function (params) {
     return api.get('/api/v1/role/list', { params })
+  },
+  getResourceIds: function (id) {
+    return api.get(`/api/v1/role/resourceIds/${id}`)
+  },
+  dispatchResources: function (data) {
+    return api.post('/api/v1/role/dispatch', data)
   }
 }
 
