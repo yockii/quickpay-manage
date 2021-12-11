@@ -248,10 +248,10 @@ export default defineComponent({
         field: (row) => row.notifyState,
         format: (val) =>
           val == 1
-            ? $t("order.notify1")
+            ? $t("order.notifyState1")
             : val == 2
-            ? $t("order.notify2")
-            : $t("order.notify3"),
+            ? $t("order.notifyState2")
+            : $t("order.notifyState3"),
       },
     ];
     const condition = ref({

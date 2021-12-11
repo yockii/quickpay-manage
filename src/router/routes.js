@@ -32,6 +32,10 @@ const routes = [{
   {
     path: '/role',
     component: () => import('pages/Role.vue')
+  },
+  {
+    path: '/merchantChannel',
+    component: () => import('pages/MerchantChannel.vue')
   }
   ]
 },

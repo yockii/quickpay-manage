@@ -28,6 +28,7 @@ export default {
   deleteConfirm: 'Are You Sure to Delete?',
   dispatch: 'Dispatch',
   noModifyWithSuper: 'Cannot Modify Super Administrator Role',
+  dispatchChannel: 'Dispatch Channel',
   navigation: {
     merchant: 'Merchant',
     merchantCaption: 'Merchant info, secret & callback url etc.',
@@ -40,6 +41,7 @@ export default {
     authorize: 'Authorize',
     authorizeCaption: 'Role and Resource Dispatch Manage',
     subChannel: 'Sub Channel',
+    merchantChannel: 'Merchant\'s Channel',
   },
   merchantField: {
     id: 'Merchant ID',
@@ -115,5 +117,21 @@ export default {
   role: {
     roleName: 'Role Name',
     roleDesc: 'Role Description'
+  },
+  merchantChannel: {
+    channel: 'Channel',
+    maxAmount: 'Max Limited Amount',
+    minAmount: 'Min Limited Amount',
+    feeRate: 'Fee Rate(%)',
+    feeFixed: 'Fixed Fee',
+    dailyLimit: 'Daily Limit Amount',
+    dailyAmount: 'Daily Used Amount',
+    remark: 'Remark',
+    state: 'State',
+    balance: 'Available Balance',
+    frozen: 'Frozen Balance',
+    totalIncome: 'Total Income(With Fee)',
+    totalMerchantIncome: 'Merchant Income',
+    totalPayout: 'Total Payout',
   }
 }

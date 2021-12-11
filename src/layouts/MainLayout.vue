@@ -44,7 +44,7 @@ export default defineComponent({
     const $store = useStore();
     const { t: $t } = useI18n();
 
-    const linksList = [
+    const allLinksList = [
       {
         title: $t("navigation.merchant"),
         caption: $t("navigation.merchantCaption"),
@@ -76,6 +76,14 @@ export default defineComponent({
         to: "/role",
       },
     ];
+
+    let linksList = [];
+    if ($store.state.user.isSuper) {
+      linksList = allLinksList;
+    } else {
+      //TODO 权限
+      linksList = allLinksList;
+    }
 
     const leftDrawerOpen = ref(false);
     const username = computed(() => {

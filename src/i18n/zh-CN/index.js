@@ -25,6 +25,7 @@ export default {
   deleteConfirm: '确认要删除吗?',
   dispatch: '分配',
   noModifyWithSuper: '无法更改超级管理员角色',
+  dispatchChannel: '分配通道',
   navigation: {
     merchant: '商户管理',
     merchantCaption: '商户信息、密钥、回调地址配置等管理',
@@ -37,6 +38,7 @@ export default {
     authorize: '权限管理',
     authorizeCaption: '角色及资源权限配置管理',
     subChannel: '子渠道管理',
+    merchantChannel: '商户通道',
   },
   merchantField: {
     id: '商户ID',
@@ -112,5 +114,21 @@ export default {
   role: {
     roleName: '角色',
     roleDesc: '角色描述'
+  },
+  merchantChannel: {
+    channel: '通道',
+    maxAmount: '单笔最大限额',
+    minAmount: '单笔最小限额',
+    feeRate: '费率(%)',
+    feeFixed: '固定费率',
+    dailyLimit: '单日限额',
+    dailyAmount: '单日已用额度',
+    remark: '备注',
+    state: '状态',
+    balance: '可用余额',
+    frozen: '冻结余额',
+    totalIncome: '总入账流水',
+    totalMerchantIncome: '商户实际入账',
+    totalPayout: '总出账',
   }
 }

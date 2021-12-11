@@ -60,6 +60,16 @@
               <q-tooltip>{{ $t("update") }}</q-tooltip>
             </q-btn>
 
+            <q-btn
+              flat
+              color="primary"
+              round
+              icon="settings_input_component"
+              :to="`/merchantChannel?merchantId=${props.row.id}&merchantName=${props.row.name}`"
+            >
+              <q-tooltip>{{ $t("dispatchChannel") }}</q-tooltip>
+            </q-btn>
+
             <q-btn flat color="negative" round icon="delete_forever">
               <q-tooltip>{{ $t("delete") }}</q-tooltip>
               <q-popup-proxy>
@@ -125,7 +135,7 @@
               </template>
             </q-field>
           </div>
-          <div class="col-6">
+          <div class="col-12">
             <q-field :label="$t('merchantField.callbackUrl')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
@@ -134,7 +144,7 @@
               </template>
             </q-field>
           </div>
-          <div class="col-6">
+          <div class="col-12">
             <q-field :label="$t('merchantField.redirectUrl')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
@@ -224,14 +234,14 @@
           <div class="col-6">
             <q-input :label="$t('merchantField.name')" v-model="instance.name" />
           </div>
-          <div class="col-6">
+          <div class="col-12">
             <q-input
               :label="$t('merchantField.callbackUrl')"
               v-model="instance.callbackUrl"
             />
           </div>
-          <div class="col-6">
-            <q-field
+          <div class="col-12">
+            <q-input
               :label="$t('merchantField.redirectUrl')"
               v-model="instance.redirectUrl"
             />

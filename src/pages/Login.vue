@@ -67,19 +67,21 @@ export default defineComponent({
           return;
         }
         if (resp.code === 0) {
-          const token = resp.data;
+          const token = resp.data.token;
+          const u = resp.data.user;
           await $store.dispatch("user/setToken", token);
-          const uResp = await user.get();
-          if (uResp.code === 0) {
-            await $store.dispatch("user/setUser", uResp.data);
-            $router.replace("/main");
-          } else {
-            $q.dialog({
-              message: $t("loginFailed"),
-              ok: { label: $t("confirm") },
-            });
-            return;
-          }
+          await $store.dispatch("user/setUser", u);
+          await $store.dispatch("user/setResources", {
+            isSuper: resp.data.isSuper,
+            resources: resp.data.resources,
+          });
+          $router.replace("/main");
+        } else {
+          $q.dialog({
+            message: $t("loginFailed"),
+            ok: { label: $t("confirm") },
+          });
+          return;
         }
       } finally {
         submitting.value = false;

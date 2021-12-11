@@ -2,7 +2,7 @@
   <q-page class="q-pa-md q-gutter-md">
     <q-breadcrumbs>
       <q-breadcrumbs-el icon="home" />
-      <q-breadcrumbs-el :label="$t('navigation.role')" icon="verified_user" />
+      <q-breadcrumbs-el :label="$t('navigation.authorize')" icon="verified_user" />
     </q-breadcrumbs>
     <!-- 筛选条件 -->
     <div class="items-start q-gutter-md row">
