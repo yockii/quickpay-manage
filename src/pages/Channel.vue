@@ -103,13 +103,6 @@
       <q-card-section>
         <q-input v-model="instance.name" :label="$t('channel.name')" />
         <q-input v-model="instance.code" :label="$t('channel.code')" />
-        <q-select
-          :label="$t('channel.type')"
-          v-model="instance.type"
-          :options="typeOptions"
-          emit-value
-          map-options
-        />
       </q-card-section>
       <q-card-actions align="right">
         <q-btn flat :label="$t('cancel')" v-close-popup />
@@ -142,16 +135,6 @@
                 </div>
               </template>
             </q-field>
-          </div>
-          <div class="col-6">
-            <q-select
-              readonly
-              :label="$t('channel.type')"
-              v-model="instance.type"
-              :options="typeOptions"
-              emit-value
-              map-options
-            />
           </div>
           <div class="col-6">
             <q-select
@@ -231,15 +214,6 @@
           </div>
           <div class="col-6">
             <q-select
-              :label="$t('channel.type')"
-              v-model="instance.type"
-              :options="typeOptions"
-              emit-value
-              map-options
-            />
-          </div>
-          <div class="col-6">
-            <q-select
               :label="$t('channel.state')"
               v-model="instance.state"
               :options="stateOptions"
@@ -282,13 +256,6 @@ export default defineComponent({
         align: "center",
         field: (row) => row.code,
         format: (val) => `${val}`,
-      },
-      {
-        name: "type",
-        label: $t("channel.type"),
-        align: "center",
-        field: (row) => row.type,
-        format: (val) => (val == 1 ? $t("channel.type1") : $t("channel.type2")),
       },
       {
         name: "balance",
@@ -336,13 +303,11 @@ export default defineComponent({
     const condition = ref({
       code: "",
       name: "",
-      type: 0,
     });
     const instance = ref({
       id: "",
       name: "",
       code: "",
-      type: 1,
       state: 1,
       balance: 0,
       frozen: 0,
@@ -383,7 +348,6 @@ export default defineComponent({
       instance.value.id = "";
       instance.value.name = "";
       instance.value.code = "";
-      instance.value.type = 1;
       instance.value.state = 0;
       instance.value.balance = 0;
       instance.value.frozen = 0;
@@ -461,10 +425,6 @@ export default defineComponent({
       }
     }
 
-    const typeOptions = ref([
-      { label: $t("channel.type1"), value: 1 },
-      { label: $t("channel.type2"), value: 2 },
-    ]);
     const stateOptions = ref([
       { label: $t("available"), value: 1 },
       { label: $t("unavailable"), value: -1 },
@@ -490,7 +450,6 @@ export default defineComponent({
       openUpdateDialog,
       update,
       remove,
-      typeOptions,
       stateOptions,
     };
   },

@@ -64,6 +64,12 @@ export default defineComponent({
         to: "/order",
       },
       {
+        title: $t("navigation.payoutOrder"),
+        caption: $t("navigation.payoutOrderCaption"),
+        icon: "reorder",
+        to: "/payoutOrder",
+      },
+      {
         title: $t("navigation.user"),
         caption: $t("navigation.userCaption"),
         icon: "person",
@@ -74,6 +80,12 @@ export default defineComponent({
         caption: $t("navigation.authorizeCaption"),
         icon: "verified_user",
         to: "/role",
+      },
+      {
+        title: $t("navigation.settings"),
+        caption: $t("navigation.settingsCaption"),
+        icon: "settings",
+        to: "/settings",
       },
     ];
 

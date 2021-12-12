@@ -97,6 +97,16 @@
           :option-label="(item) => (item === null ? '' : item.name + ' - ' + item.code)"
           emit-value
           map-options
+          @update:model-value="updateSubChannels"
+        />
+        <q-select
+          :label="$t('merchantChannel.subChannel')"
+          v-model="instance.subChannelId"
+          :options="subChannels"
+          option-value="id"
+          :option-label="(item) => (item === null ? '' : item.subName)"
+          emit-value
+          map-options
         />
         <q-input
           v-model.number="instance.maxAmount"
@@ -357,6 +367,7 @@
 <script>
 import { defineComponent, ref, onMounted } from "vue";
 import { channel } from "../api/channel";
+import { subChannel } from "../api/subChannel";
 import { merchantChannel } from "../api/merchantChannel";
 import { useI18n } from "vue-i18n";
 import { useQuasar } from "quasar";
@@ -385,6 +396,13 @@ export default defineComponent({
           }
           return val;
         },
+      },
+      {
+        name: "subChannelName",
+        label: $t("merchantChannel.subChannel"),
+        align: "center",
+        field: (row) => row.subChannelName,
+        format: (val) => `${val}`,
       },
       {
         name: "balance",
@@ -434,6 +452,7 @@ export default defineComponent({
       id: "",
       merchantId: merchantId,
       channelId: "",
+      subChannelId: "",
       maxAmount: -1,
       minAmount: -1,
       feeRate: 0,
@@ -493,6 +512,7 @@ export default defineComponent({
       instance.value.id = "";
       instance.value.merchantId = merchantId;
       instance.value.channelId = "";
+      instance.value.subChannelId = "";
       instance.value.maxAmount = -1;
       instance.value.minAmount = -1;
       instance.value.feeRate = 0;
@@ -611,6 +631,21 @@ export default defineComponent({
     ]);
 
     const channels = ref([]);
+    const subChannels = ref([]);
+    async function updateSubChannels() {
+      let channelId = instance.value.channelId;
+      try {
+        const resp = await subChannel.paginate({
+          offset: -1,
+          limit: -1,
+          channelId: channelId,
+        });
+        if (resp.code === 0) {
+          subChannels.value = resp.data.items || [];
+        }
+      } finally {
+      }
+    }
 
     onMounted(() => {
       getData({ pagination: pagination.value });
@@ -639,6 +674,8 @@ export default defineComponent({
       remove,
       stateOptions,
       channels,
+      updateSubChannels,
+      subChannels,
     };
   },
 });

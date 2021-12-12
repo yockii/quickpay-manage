@@ -5,6 +5,7 @@
       <q-breadcrumbs-el
         :label="$t('navigation.channel') + ': ' + channelCode"
         icon="streetview"
+        to="/channel"
       />
       <q-breadcrumbs-el :label="$t('navigation.subChannel')" icon="account_tree" />
     </q-breadcrumbs>
@@ -100,6 +101,13 @@
             v-model="instance.subName"
             :label="$t('subChannel.subName')"
           />
+          <q-select
+            :label="$t('subChannel.type')"
+            v-model="instance.type"
+            :options="typeOptions"
+            emit-value
+            map-options
+          />
           <q-input
             class="col-6"
             v-model.number="instance.maxAmount"
@@ -142,6 +150,26 @@
           />
           <q-input
             class="col-6"
+            v-model="instance.secretToken"
+            :label="$t('subChannel.secretToken')"
+          />
+          <q-input
+            class="col-6"
+            v-model="instance.secretExt1"
+            :label="$t('subChannel.secretExt1')"
+          />
+          <q-input
+            class="col-6"
+            v-model="instance.secretExt2"
+            :label="$t('subChannel.secretExt2')"
+          />
+          <q-input
+            class="col-6"
+            v-model="instance.virtualAccountId"
+            :label="$t('subChannel.virtualAccountId')"
+          />
+          <q-input
+            class="col-6"
             v-model="instance.remark"
             :label="$t('subChannel.remark')"
           />
@@ -173,10 +201,20 @@
             <q-field :label="$t('subChannel.subName')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.name }}
+                  {{ instance.subName }}
                 </div>
               </template>
             </q-field>
+          </div>
+          <div class="col-6">
+            <q-select
+              readonly
+              :label="$t('subChannel.type')"
+              v-model="instance.type"
+              :options="typeOptions"
+              emit-value
+              map-options
+            />
           </div>
           <div class="col-6">
             <q-field :label="$t('subChannel.merchantNo')" stack-label>
@@ -237,7 +275,7 @@
             <q-field :label="$t('subChannel.dailyLimit')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.totalPayout || 0.0 }}
+                  {{ instance.dailyLimit || 0.0 }}
                 </div>
               </template>
             </q-field>
@@ -270,10 +308,37 @@
             <q-input :label="$t('subChannel.subName')" v-model="instance.subName" />
           </div>
           <div class="col-6">
+            <q-select
+              :label="$t('subChannel.type')"
+              v-model="instance.type"
+              :options="typeOptions"
+              emit-value
+              map-options
+            />
+          </div>
+          <div class="col-6">
             <q-input :label="$t('subChannel.merchantNo')" v-model="instance.merchantNo" />
           </div>
           <div class="col-6">
             <q-input :label="$t('subChannel.secretKey')" v-model="instance.secretKey" />
+          </div>
+          <div class="col-6">
+            <q-input
+              :label="$t('subChannel.secretToken')"
+              v-model="instance.secretToken"
+            />
+          </div>
+          <div class="col-6">
+            <q-input :label="$t('subChannel.secretExt1')" v-model="instance.secretExt1" />
+          </div>
+          <div class="col-6">
+            <q-input :label="$t('subChannel.secretExt2')" v-model="instance.secretExt2" />
+          </div>
+          <div class="col-6">
+            <q-input
+              :label="$t('subChannel.virtualAccountId')"
+              v-model="instance.virtualAccountId"
+            />
           </div>
           <div class="col-6">
             <q-input :label="$t('subChannel.remark')" v-model="instance.remark" />
@@ -355,6 +420,13 @@ export default defineComponent({
         format: (val) => `${val}`,
       },
       {
+        name: "type",
+        label: $t("subChannel.type"),
+        align: "center",
+        field: (row) => row.type,
+        format: (val) => (val == 1 ? $t("subChannel.type1") : $t("subChannel.type2")),
+      },
+      {
         name: "merchantNo",
         label: $t("subChannel.merchantNo"),
         align: "center",
@@ -415,13 +487,19 @@ export default defineComponent({
       channelId: "",
       subName: "",
       state: 0,
+      type: 0,
     });
     const instance = ref({
       id: "",
       channelId: "",
       subName: "",
+      type: 1,
       merchantNo: "",
       secretKey: "",
+      secretToken: "",
+      secretExt1: "",
+      secretExt2: "",
+      virtualAccountId: "",
       remark: "",
       state: 1,
       maxAmount: 1,
@@ -446,8 +524,8 @@ export default defineComponent({
         const resp = await subChannel.paginate({
           offset,
           limit: rowsPerPage,
-          id: condition.value.id,
-          name: condition.value.name,
+          channelId: condition.value.channelId,
+          subName: condition.value.subName,
         });
         if (resp.code === 0) {
           rows.value = resp.data.items || [];
@@ -470,8 +548,13 @@ export default defineComponent({
     function resetInstance() {
       instance.value.id = "";
       instance.value.subName = "";
+      instance.value.type = 1;
       instance.value.merchantNo = "";
       instance.value.secretKey = "";
+      instance.value.secretToken = "";
+      instance.value.secretExt1 = "";
+      instance.value.secretExt2 = "";
+      instance.value.virtualAccountId = "";
       instance.value.remark = "";
       instance.value.state = 1;
       instance.value.maxAmount = 0;
@@ -564,6 +647,10 @@ export default defineComponent({
       }
     }
 
+    const typeOptions = ref([
+      { label: $t("subChannel.type1"), value: 1 },
+      { label: $t("subChannel.type2"), value: 2 },
+    ]);
     const stateOptions = ref([
       { label: $t("available"), value: 1 },
       { label: $t("unavailable"), value: -1 },
@@ -595,6 +682,7 @@ export default defineComponent({
       remove,
       stateOptions,
       channelCode,
+      typeOptions,
     };
   },
 });

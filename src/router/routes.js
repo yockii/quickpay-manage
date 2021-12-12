@@ -26,6 +26,10 @@ const routes = [{
     component: () => import('pages/Order.vue')
   },
   {
+    path: '/payoutOrder',
+    component: () => import('pages/PayoutOrder.vue')
+  },
+  {
     path: '/user',
     component: () => import('pages/User.vue')
   },
@@ -36,6 +40,14 @@ const routes = [{
   {
     path: '/merchantChannel',
     component: () => import('pages/MerchantChannel.vue')
+  },
+  {
+    path: '/settings',
+    component: () => import('pages/Settings.vue')
+  },
+  {
+    path: '/paygContact',
+    component: () => import('pages/PaygContact.vue')
   }
   ]
 },

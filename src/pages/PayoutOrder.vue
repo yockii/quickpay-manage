@@ -2,13 +2,13 @@
   <q-page class="q-pa-md q-gutter-md">
     <q-breadcrumbs>
       <q-breadcrumbs-el icon="home" />
-      <q-breadcrumbs-el :label="$t('navigation.order')" icon="reorder" />
+      <q-breadcrumbs-el :label="$t('navigation.payoutOrder')" icon="reorder" />
     </q-breadcrumbs>
     <!-- 筛选条件 -->
     <div class="items-start q-gutter-md row">
-      <q-input v-model="condition.id" :label="$t('order.id')" />
-      <q-input v-model="condition.tradeId" :label="$t('order.tradeId')" />
-      <q-input v-model="condition.channelCode" :label="$t('order.channelCode')" />
+      <q-input v-model="condition.id" :label="$t('payoutOrder.id')" />
+      <q-input v-model="condition.tradeId" :label="$t('payoutOrder.tradeId')" />
+      <q-input v-model="condition.channelCode" :label="$t('payoutOrder.channelCode')" />
       <!-- <q-space /> -->
       <q-btn class="self-end" icon="search" @click="getData({ pagination })">
         <q-tooltip>{{ $t("search") }}</q-tooltip>
@@ -61,16 +61,7 @@
       <q-card-section>
         <div class="row">
           <div class="col-6">
-            <q-field :label="$t('order.id')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.id }}
-                </div>
-              </template>
-            </q-field>
-          </div>
-          <div class="col-6">
-            <q-field :label="$t('order.channelCode')" stack-label>
+            <q-field :label="$t('payoutOrder.channelCode')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.channelCode }}
@@ -79,7 +70,7 @@
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('order.tradeId')" stack-label>
+            <q-field :label="$t('payoutOrder.tradeId')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.tradeId }}
@@ -88,82 +79,60 @@
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('order.amount')" stack-label>
+            <q-field :label="$t('payoutOrder.status')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.amount / 100 || 0.0 }}
+                  {{
+                    instance.status > 0
+                      ? $t(`payoutOrder.status${instance.status}`)
+                      : $t(`payoutOrder.status0${-instance.status}`)
+                  }}
+                </div>
+              </template>
+            </q-field>
+          </div>
+
+          <div class="col-6">
+            <q-field :label="$t('payoutOrder.amount')" stack-label>
+              <template v-slot:control>
+                <div class="self-center full-width no-outline" tabindex="0">
+                  {{ instance.amount || 0.0 }}
                 </div>
               </template>
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('order.fee')" stack-label>
+            <q-field :label="$t('payoutOrder.accountNumber')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.fee / 100 || 0.0 }}
+                  {{ instance.accountNumber }}
                 </div>
               </template>
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('order.channelFee')" stack-label>
+            <q-field :label="$t('payoutOrder.beneficiaryName')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.channelFee / 100 || 0.0 }}
+                  {{ instance.beneficiaryName }}
                 </div>
               </template>
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('order.payerName')" stack-label>
+            <q-field :label="$t('payoutOrder.bankName')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.payerName }}
+                  {{ instance.bankName }}
                 </div>
               </template>
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('order.payerMobile')" stack-label>
+            <q-field :label="$t('payoutOrder.bankCode')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.payerMobile }}
-                </div>
-              </template>
-            </q-field>
-          </div>
-          <div class="col-6">
-            <q-field :label="$t('order.payerVirtualAddress')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.payerVirtualAddress }}
-                </div>
-              </template>
-            </q-field>
-          </div>
-          <div class="col-6">
-            <q-field :label="$t('order.state')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ $t(`order.state${instance.state}`) }}
-                </div>
-              </template>
-            </q-field>
-          </div>
-          <div class="col-6">
-            <q-field :label="$t('order.successTime')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.successTime }}
-                </div>
-              </template>
-            </q-field>
-          </div>
-          <div class="col-6">
-            <q-field :label="$t('order.createTime')" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.createTime }}
+                  {{ instance.bankCode }}
                 </div>
               </template>
             </q-field>
@@ -179,11 +148,11 @@
 
 <script>
 import { defineComponent, ref, onMounted } from "vue";
-import { payOrder } from "../api/payOrder";
+import { payoutOrder } from "../api/payoutOrder";
 import { useI18n } from "vue-i18n";
 import { useQuasar } from "quasar";
 export default defineComponent({
-  name: "PageOrder",
+  name: "PagePayoutOrder",
   setup() {
     const { t: $t } = useI18n();
     const $q = useQuasar();
@@ -191,92 +160,60 @@ export default defineComponent({
     const columns = [
       {
         name: "id",
-        label: $t("order.id"),
+        label: $t("payoutOrder.id"),
         align: "center",
         field: (row) => row.id,
         format: (val) => `${val}`,
       },
       {
         name: "merchantId",
-        label: $t("order.merchantId"),
+        label: $t("payoutOrder.merchantId"),
         align: "center",
         field: (row) => row.merchantId,
         format: (val) => `${val}`,
       },
       {
         name: "channelCode",
-        label: $t("order.channelCode"),
+        label: $t("payoutOrder.channelCode"),
         align: "center",
         field: (row) => row.channelCode,
         format: (val) => `${val}`,
       },
       {
         name: "tradeId",
-        label: $t("order.tradeId"),
+        label: $t("payoutOrder.tradeId"),
         align: "center",
         field: (row) => row.tradeId,
         format: (val) => `${val}`,
       },
       {
         name: "amount",
-        label: $t("order.amount"),
+        label: $t("payoutOrder.amount"),
         align: "center",
         field: (row) => row.amount,
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
       {
         name: "fee",
-        label: $t("order.fee"),
+        label: $t("payoutOrder.fee"),
         align: "center",
         field: (row) => row.fee,
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
       {
-        name: "channelFee",
-        label: $t("order.channelFee"),
+        name: "beneficiaryName",
+        label: $t("payoutOrder.beneficiaryName"),
         align: "center",
-        field: (row) => row.channelFee,
-        format: (val) => (val ? `${val / 100}` : "0.00"),
-      },
-      {
-        name: "payUser",
-        label: $t("order.payUser"),
-        align: "center",
-        field: (row) => row.payUser,
+        field: (row) => row.beneficiaryName,
         format: (val) => `${val}`,
       },
       {
-        name: "state",
-        label: $t("order.state"),
+        name: "status",
+        label: $t("payoutOrder.status"),
         align: "center",
-        field: (row) => row.state,
-        format: (val) => {
-          switch (val) {
-            case 1:
-              return $t("order.state1");
-            case 2:
-              return $t("order.state2");
-            case 3:
-              return $t("order.state3");
-            case 4:
-              return $t("order.state4");
-            case 9:
-              return $t("order.state9");
-          }
-          return "";
-        },
-      },
-      {
-        name: "notifyState",
-        label: $t("order.notifyState"),
-        align: "center",
-        field: (row) => row.notifyState,
+        field: (row) => row.status,
         format: (val) =>
-          val == 1
-            ? $t("order.notifyState1")
-            : val == 2
-            ? $t("order.notifyState2")
-            : $t("order.notifyState3"),
+          val > 0 ? $t(`payoutOrder.status${val}`) : $t(`payoutOrder.status0${-val}`),
       },
     ];
     const condition = ref({
@@ -294,17 +231,15 @@ export default defineComponent({
       tradeId: "",
       amount: 0,
       fee: 0,
-      channelFee: 0,
-      payUser: "",
       remark: "",
-      payerName: "",
-      payerMobile: "",
-      payerVirtualAddress: "",
-      state: 0,
-      notifyState: 0,
-      repairFlag: 0,
-      successTime: "",
-      createTime: "",
+      accountNumber: "",
+      beneficiaryName: "",
+      bankName: "",
+      branchName: "",
+      state: "",
+      bankCode: "",
+      bankCountry: "",
+      status: 0,
     });
     const rows = ref([]);
     const loading = ref(false);
@@ -318,7 +253,7 @@ export default defineComponent({
       const { page, rowsPerPage } = props.pagination;
       const offset = (page - 1) * rowsPerPage;
       try {
-        const resp = await payOrder.paginate({
+        const resp = await payoutOrder.paginate({
           offset,
           limit: rowsPerPage,
           id: condition.value.id,
