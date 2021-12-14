@@ -175,5 +175,16 @@ export default {
     status6: 'Paid',
     status01: 'Verify Failed',
     status02: 'Pay Failed',
+  },
+  odinmoSender: {
+    name: 'Name',
+    senderMobileNumber: 'Mobile Number',
+    city: 'City',
+    state: 'State',
+    pinCode: 'Pin Code',
+    address: 'Address',
+    status: 'Status',
+    status1: 'Created',
+    status0: 'Failed',
   }
 }

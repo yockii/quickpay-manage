@@ -48,6 +48,10 @@ const routes = [{
   {
     path: '/paygContact',
     component: () => import('pages/PaygContact.vue')
+  },
+  {
+    path: '/odinmoSender',
+    component: () => import('pages/OdinmoSender.vue')
   }
   ]
 },

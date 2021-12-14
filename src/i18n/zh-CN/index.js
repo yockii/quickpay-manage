@@ -172,5 +172,16 @@ export default {
     status6: '已支付',
     status01: '验证失败',
     status02: '支付失败',
+  },
+  odinmoSender: {
+    name: '姓名',
+    senderMobileNumber: '手机号',
+    city: '城市',
+    state: '州',
+    pinCode: 'Pin Code',
+    address: '地址',
+    status: '状态',
+    status1: '已创建',
+    status0: '创建失败',
   }
 }

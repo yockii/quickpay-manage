@@ -17,48 +17,20 @@
         map-options
         @update:model-value="getData"
       />
+      <q-input class="col-6" v-model="instance.name" :label="$t('odinmo.name')" />
       <q-input
         class="col-6"
-        v-model="instance.companyName"
-        :label="$t('paygContact.companyName')"
+        v-model="instance.senderMobileNumber"
+        :label="$t('odinmo.senderMobileNumber')"
       />
-      <q-input
-        class="col-6"
-        v-model="instance.firstName"
-        :label="$t('paygContact.firstName')"
-      />
-      <q-input
-        class="col-6"
-        v-model="instance.lastName"
-        :label="$t('paygContact.lastName')"
-      />
-      <q-input
-        class="col-6"
-        v-model="instance.address"
-        :label="$t('paygContact.address')"
-      />
-      <q-input class="col-6" v-model="instance.city" :label="$t('paygContact.city')" />
-      <q-input class="col-6" v-model="instance.state" :label="$t('paygContact.state')" />
-      <q-input
-        class="col-6"
-        v-model="instance.zipCode"
-        :label="$t('paygContact.zipCode')"
-      />
-      <q-input
-        class="col-6"
-        v-model="instance.country"
-        :label="$t('paygContact.country')"
-      />
-      <q-input
-        class="col-6"
-        v-model="instance.mobileNo"
-        :label="$t('paygContact.mobileNo')"
-      />
-      <q-input class="col-6" v-model="instance.email" :label="$t('paygContact.email')" />
+      <q-input class="col-6" v-model="instance.city" :label="$t('odinmo.city')" />
+      <q-input class="col-6" v-model="instance.state" :label="$t('odinmo.state')" />
+      <q-input class="col-6" v-model="instance.address" :label="$t('odinmo.address')" />
+      <q-input class="col-6" v-model="instance.pinCode" :label="$t('odinmo.pinCode')" />
       <q-select
         readonly
         class="col-6"
-        :label="$t('paygContact.status')"
+        :label="$t('odinmo.status')"
         v-model="instance.status"
         :options="stateOptions"
         emit-value
@@ -76,14 +48,14 @@
 
 <script>
 import { defineComponent, ref, onMounted } from "vue";
-import { paygContact } from "../api/paygContact";
+import { odinmoSender } from "../api/odinmoSender";
 import { channel } from "../api/channel";
 import { subChannel } from "../api/subChannel";
 import { useQuasar } from "quasar";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 export default defineComponent({
-  name: "PagePaygContact",
+  name: "PageOdinmoSender",
   setup() {
     const { t: $t } = useI18n();
     const $q = useQuasar();
@@ -94,51 +66,43 @@ export default defineComponent({
       id: "",
       channelId: "",
       subChannelId: "",
-      companyName: "",
-      firstName: "",
-      lastName: "",
-      address: "",
+      name: "",
+      senderMobileNumber: "",
       city: "",
       state: "",
-      zipCode: "",
-      country: "",
-      mobileNo: "",
-      email: "",
+      pinCode: "",
+      address: "",
       status: 0,
     });
 
     async function getData() {
-      const resp = await paygContact.get({ subChannelId: instance.value.subChannelId });
+      const resp = await odinmoSender.get({ subChannelId: instance.value.subChannelId });
       if (resp.code === 0 && resp.data) {
         instance.value = resp.data;
       } else {
-        instanct.id = "";
-        instanct.channelId = "";
-        instanct.subChannelId = "";
-        instanct.companyName = "";
-        instanct.firstName = "";
-        instanct.lastName = "";
-        instanct.address = "";
-        instanct.city = "";
-        instanct.state = "";
-        instanct.zipCode = "";
-        instanct.country = "";
-        instanct.mobileNo = "";
-        instanct.email = "";
-        instanct.status = 0;
+        instance.value.id = "";
+        instance.value.channelId = "";
+        instance.value.subChannelId = "";
+        instance.value.name = "";
+        instance.value.senderMobileNumber = "";
+        instance.value.city = "";
+        instance.value.state = "";
+        instance.value.pinCode = "";
+        instance.value.address = "";
+        instance.value.status = 0;
       }
     }
 
     const stateOptions = ref([
-      { label: $t("paygContact.stateCreated"), value: 1 },
-      { label: $t("paygContact.stateFailed"), value: -1 },
+      { label: $t("odinmoSender.status1"), value: 1 },
+      { label: $t("odinmoSender.status0"), value: 0 },
     ]);
 
     async function save() {
       if (instance.value.id && instance.value.id != "") {
         // update
       } else {
-        const resp = await paygContact.add(instance.value);
+        const resp = await odinmoSender.add(instance.value);
         if (resp.code === 0) {
           $q.dialog({ message: $t("success") });
         }
@@ -146,7 +110,7 @@ export default defineComponent({
     }
 
     onMounted(async () => {
-      let resp = await channel.paginate({ offset: -1, limit: -1, code: "payg" });
+      let resp = await channel.paginate({ offset: -1, limit: -1, code: "odinmo" });
       if (resp.code === 0) {
         if (resp.data.items && resp.data.items.length > 0) {
           const c = resp.data.items[0];
@@ -162,7 +126,7 @@ export default defineComponent({
           }
         }
       }
-      $q.dialog({ message: "No Payg Channel", persistent: true }).onOk(() => {
+      $q.dialog({ message: "No Odinmo Channel", persistent: true }).onOk(() => {
         $router.push("/settings");
       });
     });

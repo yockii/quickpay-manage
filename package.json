@@ -2,7 +2,7 @@
   "name": "quickpay-manage",
   "version": "0.0.1",
   "description": "聚合支付",
-  "productName": "QuickPay",
+  "productName": "Flash Pay",
   "author": "yockii <xuyuqi@gmail.com>",
   "private": true,
   "scripts": {
