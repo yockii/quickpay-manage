@@ -55,7 +55,8 @@ export default {
     totalIncome: 'Total Income(With Fee)',
     totalRealIncome: 'Total Income',
     totalPayout: 'Total Payout',
-    callbackUrl: 'Callback Url',
+    payCallbackUrl: 'Pay in Callback Url',
+    payoutCallbackUrl: 'Pay out Callback Url',
     redirectUrl: 'Redirect Url',
     secret: 'Secret Key',
     createTime: 'Create Time'

@@ -102,6 +102,18 @@
       </q-card-section>
       <q-card-section>
         <q-input v-model="instance.name" :label="$t('merchantField.name')" />
+        <q-input
+          v-model="instance.payCallbackUrl"
+          :label="$t('merchantField.payCallbackUrl')"
+        />
+        <q-input
+          v-model="instance.payoutCallbackUrl"
+          :label="$t('merchantField.payoutCallbackUrl')"
+        />
+        <q-input
+          v-model="instance.redirectUrl"
+          :label="$t('merchantField.redirectUrl')"
+        />
       </q-card-section>
       <q-card-actions align="right">
         <q-btn flat :label="$t('cancel')" v-close-popup />
@@ -136,10 +148,19 @@
             </q-field>
           </div>
           <div class="col-12">
-            <q-field :label="$t('merchantField.callbackUrl')" stack-label>
+            <q-field :label="$t('merchantField.payCallbackUrl')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.callbackUrl }}
+                  {{ instance.payCallbackUrl }}
+                </div>
+              </template>
+            </q-field>
+          </div>
+          <div class="col-12">
+            <q-field :label="$t('merchantField.payoutCallbackUrl')" stack-label>
+              <template v-slot:control>
+                <div class="self-center full-width no-outline" tabindex="0">
+                  {{ instance.payoutCallbackUrl }}
                 </div>
               </template>
             </q-field>
@@ -236,8 +257,14 @@
           </div>
           <div class="col-12">
             <q-input
-              :label="$t('merchantField.callbackUrl')"
-              v-model="instance.callbackUrl"
+              :label="$t('merchantField.payCallbackUrl')"
+              v-model="instance.payCallbackUrl"
+            />
+          </div>
+          <div class="col-12">
+            <q-input
+              :label="$t('merchantField.payoutCallbackUrl')"
+              v-model="instance.payoutCallbackUrl"
             />
           </div>
           <div class="col-12">
@@ -339,7 +366,8 @@ export default defineComponent({
       totalIncome: 0,
       totalRealIncome: 0,
       totalPayout: 0,
-      callbackUrl: "",
+      payCallbackUrl: "",
+      payoutCallbackUrl: "",
       redirectUrl: "",
       secret: "",
     });

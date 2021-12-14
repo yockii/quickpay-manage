@@ -52,7 +52,8 @@ export default {
     totalIncome: '总入账流水',
     totalRealIncome: '总入账金额',
     totalPayout: '总出账',
-    callbackUrl: '回调地址',
+    payCallbackUrl: '代收回调地址',
+    payoutCallbackUrl: '代付回调地址',
     redirectUrl: '跳转地址',
     secret: '密钥',
     createTime: '创建时间'
