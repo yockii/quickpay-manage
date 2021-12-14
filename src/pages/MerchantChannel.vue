@@ -125,6 +125,10 @@
           :label="$t('merchantChannel.feeFixed')"
         />
         <q-input
+          v-model.number="instance.fixedAmount"
+          :label="$t('merchantChannel.fixedAmount')"
+        />
+        <q-input
           v-model.number="instance.dailyLimit"
           :label="$t('merchantChannel.dailyLimit')"
         />
@@ -201,6 +205,15 @@
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ instance.feeFixed || 0 }}
+                </div>
+              </template>
+            </q-field>
+          </div>
+          <div class="col-6">
+            <q-field :label="$t('merchantChannel.fixedAmount')" stack-label>
+              <template v-slot:control>
+                <div class="self-center full-width no-outline" tabindex="0">
+                  {{ instance.fixedAmount || 0 }}
                 </div>
               </template>
             </q-field>
@@ -332,6 +345,12 @@
           </div>
           <div class="col-6">
             <q-input
+              v-model.number="instance.fixedAmount"
+              :label="$t('merchantChannel.fixedAmount')"
+            />
+          </div>
+          <div class="col-6">
+            <q-input
               v-model.number="instance.dailyLimit"
               :label="$t('merchantChannel.dailyLimit')"
             />
@@ -457,6 +476,7 @@ export default defineComponent({
       minAmount: -1,
       feeRate: 0,
       feeFixed: 0,
+      fixedAmount: 0,
       dailyLimit: -1,
       dailyAmount: -1,
       remark: "",
@@ -491,6 +511,7 @@ export default defineComponent({
             row.minAmount = row.minAmount == -1 ? -1 : row.minAmount / 100;
             row.dailyLimit = row.dailyLimit == -1 ? -1 : row.dailyLimit / 100;
             row.dailyAmount = row.dailyAmount == -1 ? -1 : row.dailyAmount / 100;
+            row.fixedAmount = row.fixedAmount == -1 ? -1 : row.fixedAmount / 100;
             row.balance = row.balance ? row.balance / 100 : 0;
             row.frozen = row.frozen ? row.frozen / 100 : 0;
             row.totalIncome = row.totalIncome ? row.totalIncome / 100 : 0;
@@ -517,6 +538,7 @@ export default defineComponent({
       instance.value.minAmount = -1;
       instance.value.feeRate = 0;
       instance.value.feeFixed = 0;
+      instance.value.fixedAmount = 0;
       instance.value.dailyLimit = -1;
       instance.value.dailyAmount = -1;
       instance.value.remark = "";
@@ -529,6 +551,11 @@ export default defineComponent({
     }
 
     function dealNumber(obj) {
+      if (obj.fixedAmount < 0) {
+        obj.fixedAmount = -1;
+      } else {
+        obj.fixedAmount = parseInt(obj.fixedAmount * 100);
+      }
       if (obj.maxAmount < 0) {
         obj.maxAmount = -1;
       } else {

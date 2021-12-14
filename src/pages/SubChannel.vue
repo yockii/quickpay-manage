@@ -64,6 +64,10 @@
               <q-tooltip>{{ $t("update") }}</q-tooltip>
             </q-btn>
 
+            <q-btn flat color="primary" round icon="bug_report" @click="test(props.row)">
+              <q-tooltip>{{ $t("test") }}</q-tooltip>
+            </q-btn>
+
             <q-btn flat color="negative" round icon="delete_forever">
               <q-tooltip>{{ $t("delete") }}</q-tooltip>
               <q-popup-proxy>
@@ -127,6 +131,11 @@
             class="col-6"
             v-model.number="instance.feeFixed"
             :label="$t('subChannel.feeFixed')"
+          />
+          <q-input
+            class="col-6"
+            v-model.number="instance.fixedAmount"
+            :label="$t('subChannel.fixedAmount')"
           />
           <q-input
             class="col-6"
@@ -272,6 +281,15 @@
             </q-field>
           </div>
           <div class="col-6">
+            <q-field :label="$t('subChannel.fixedAmount')" stack-label>
+              <template v-slot:control>
+                <div class="self-center full-width no-outline" tabindex="0">
+                  {{ instance.fixedAmount || 0.0 }}
+                </div>
+              </template>
+            </q-field>
+          </div>
+          <div class="col-6">
             <q-field :label="$t('subChannel.dailyLimit')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
@@ -365,6 +383,12 @@
             <q-input
               :label="$t('subChannel.feeFixed')"
               v-model.number="instance.feeFixed"
+            />
+          </div>
+          <div class="col-6">
+            <q-input
+              :label="$t('subChannel.fixedAmount')"
+              v-model.number="instance.fixedAmount"
             />
           </div>
           <div class="col-6">
@@ -506,6 +530,7 @@ export default defineComponent({
       minAmount: 0,
       feeRate: 0.0,
       feeFixed: 0,
+      fixedAmount: 0,
       dailyLimit: 0,
       dailyAmount: 0,
     });
@@ -530,6 +555,7 @@ export default defineComponent({
         if (resp.code === 0) {
           rows.value = resp.data.items || [];
           rows.value.forEach((o) => {
+            o.fixedAmount = o.fixedAmount ? o.fixedAmount / 100 : 0;
             o.maxAmount = o.maxAmount ? o.maxAmount / 100 : 0;
             o.minAmount = o.minAmount ? o.minAmount / 100 : 0;
             o.feeFixed = o.feeFixed ? o.feeFixed / 100 : 0;
@@ -561,11 +587,13 @@ export default defineComponent({
       instance.value.minAmount = 0;
       instance.value.feeRate = 0.0;
       instance.value.feeFixed = 0;
+      instance.value.fixedAmount = 0;
       instance.value.dailyLimit = 0;
       instance.value.dailyAmount = 0;
     }
 
     function dealAmount(o) {
+      o.fixedAmount = parseInt(o.fixedAmount * 100);
       o.maxAmount = parseInt(o.maxAmount * 100);
       o.minAmount = parseInt(o.minAmount * 100);
       o.feeFixed = parseInt(o.feeFixed * 100);
@@ -657,6 +685,9 @@ export default defineComponent({
     ]);
 
     const channelCode = ref("");
+
+    function test(row) {}
+
     onMounted(() => {
       condition.value.channelId = $route.query.channelId;
       instance.value.channelId = $route.query.channelId;
@@ -683,6 +714,7 @@ export default defineComponent({
       stateOptions,
       channelCode,
       typeOptions,
+      test,
     };
   },
 });
