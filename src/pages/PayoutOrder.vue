@@ -257,7 +257,8 @@ export default defineComponent({
           offset,
           limit: rowsPerPage,
           id: condition.value.id,
-          name: condition.value.name,
+          channelCode: condition.value.channelCode,
+          tradeId: condition.value.tradeId,
         });
         if (resp.code === 0) {
           rows.value = resp.data.items || [];
