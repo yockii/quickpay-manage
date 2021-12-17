@@ -58,6 +58,26 @@
               <q-tooltip>{{ $t("update") }}</q-tooltip>
             </q-btn>
 
+            <q-btn
+              flat
+              color="primary"
+              round
+              icon="calculate"
+              @click="openDialogCalcFee(props.row)"
+            >
+              <q-tooltip>{{ $t("testFee") }}</q-tooltip>
+            </q-btn>
+
+            <q-btn
+              flat
+              color="primary"
+              round
+              icon="price_change"
+              @click="addMoney(props.row)"
+            >
+              <q-tooltip>{{ $t("addMoney") }}</q-tooltip>
+            </q-btn>
+
             <q-btn flat color="negative" round icon="delete_forever">
               <q-tooltip>{{ $t("delete") }}</q-tooltip>
               <q-popup-proxy>
@@ -115,6 +135,10 @@
         <q-input
           v-model.number="instance.minAmount"
           :label="$t('merchantChannel.minAmount')"
+        />
+        <q-input
+          v-model.number="instance.feeExpr"
+          :label="$t('merchantChannel.feeExpr')"
         />
         <q-input
           v-model.number="instance.feeRate"
@@ -190,6 +214,14 @@
                 </div>
               </template>
             </q-field>
+          </div>
+          <div class="col-12">
+            <q-input
+              type="textarea"
+              readonly
+              :label="$t('merchantChannel.feeExpr')"
+              v-model="instance.feeExpr"
+            />
           </div>
           <div class="col-6">
             <q-field :label="$t('merchantChannel.feeRate')" stack-label>
@@ -331,6 +363,13 @@
               :label="$t('merchantChannel.minAmount')"
             />
           </div>
+          <div class="col-12">
+            <q-input
+              type="textarea"
+              v-model.number="instance.feeExpr"
+              :label="$t('merchantChannel.feeExpr')"
+            />
+          </div>
           <div class="col-6">
             <q-input
               v-model.number="instance.feeRate"
@@ -378,6 +417,23 @@
       <q-card-actions align="right">
         <q-btn flat :label="$t('cancel')" v-close-popup />
         <q-btn :label="$t('confirm')" @click="update" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+  <q-dialog v-model="dialogTestFee">
+    <q-card class="q-px-sm q-pb-md">
+      <q-card-section>
+        <div class="text-h6">
+          {{ $t("testFee") }}
+        </div>
+      </q-card-section>
+      <q-card-actions>
+        <q-input v-model.number="testAmount" label="Amount" />
+      </q-card-actions>
+      <q-card-actions align="right">
+        <q-btn flat :label="$t('cancel')" v-close-popup />
+        <q-btn :label="$t('confirm')" @click="calcFee" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -474,6 +530,7 @@ export default defineComponent({
       subChannelId: "",
       maxAmount: -1,
       minAmount: -1,
+      feeExpr: "",
       feeRate: 0,
       feeFixed: 0,
       fixedAmount: 0,
@@ -493,7 +550,6 @@ export default defineComponent({
       page: 1,
       rowsPerPage: 10,
       rowsNumber: 0,
-      merchantId,
     });
     async function getData(props) {
       loading.value = true;
@@ -503,6 +559,7 @@ export default defineComponent({
         const resp = await merchantChannel.paginate({
           offset,
           limit: rowsPerPage,
+          merchantId,
         });
         if (resp.code === 0) {
           rows.value = resp.data.items || [];
@@ -536,6 +593,7 @@ export default defineComponent({
       instance.value.subChannelId = "";
       instance.value.maxAmount = -1;
       instance.value.minAmount = -1;
+      instance.value.feeExpr = "";
       instance.value.feeRate = 0;
       instance.value.feeFixed = 0;
       instance.value.fixedAmount = 0;
@@ -551,6 +609,11 @@ export default defineComponent({
     }
 
     function dealNumber(obj) {
+      if (obj.feeFixed < 0) {
+        obj.feeFixed = -1;
+      } else {
+        obj.feeFixed = parseInt(obj.feeFixed * 100);
+      }
       if (obj.fixedAmount < 0) {
         obj.fixedAmount = -1;
       } else {
@@ -674,6 +737,57 @@ export default defineComponent({
       }
     }
 
+    function addMoney(row) {
+      let channelName = row.channelId;
+      for (let c of channels.value) {
+        if (c.id === channelName) {
+          channelName = c.name;
+          break;
+        }
+      }
+      $q.dialog({
+        title: $t("addMoney"),
+        message: $t("addMoneyMessage") + channelName + " - " + row.subChannelName,
+        prompt: {
+          model: "0",
+          type: "number",
+        },
+        cancel: true,
+        persistent: true,
+      }).onOk((data) => {
+        merchantChannel
+          .incr({ id: row.id, amount: parseInt(data * 100) })
+          .then((resp) => {
+            if (resp.code === 0) {
+              $q.dialog({ message: $t("success") });
+              getData({ pagination: pagination.value });
+            } else {
+              $q.dialog({ message: $t("failed") });
+            }
+          });
+      });
+    }
+
+    // test fee
+    const dialogTestFee = ref(false);
+    const testAmount = ref(0);
+    function openDialogCalcFee(row) {
+      instance.value = row;
+      dialogTestFee.value = true;
+    }
+    async function calcFee() {
+      let amount = parseInt(testAmount.value * 100);
+      let resp = await merchantChannel.testFee({
+        id: instance.value.id,
+        amount,
+      });
+      if (resp.code === 0) {
+        let msg = resp.msg || "";
+        msg += ", result: " + (resp.data || 0) / 100;
+        $q.dialog({ message: msg });
+      }
+    }
+
     onMounted(() => {
       getData({ pagination: pagination.value });
       channel.paginate({ offset: -1, limit: -1 }).then((resp) => {
@@ -703,6 +817,11 @@ export default defineComponent({
       channels,
       updateSubChannels,
       subChannels,
+      addMoney,
+      openDialogCalcFee,
+      dialogTestFee,
+      testAmount,
+      calcFee,
     };
   },
 });

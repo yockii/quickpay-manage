@@ -1,6 +1,6 @@
 import { api } from 'boot/axios'
 
-const paygContact = {
+const odinmoSender = {
   add: function (data) {
     return api.post('/api/v1/odinmoSender', data)
   },
@@ -20,4 +20,4 @@ const paygContact = {
   },
 }
 
-export { paygContact }
+export { odinmoSender }

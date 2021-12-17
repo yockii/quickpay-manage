@@ -17,6 +17,9 @@ const subChannel = {
   },
   paginate: function (params) {
     return api.get('/api/v1/subChannel/list', { params })
+  },
+  testFee: function (params) {
+    return api.get('/api/v1/subChannel/testFee', { params })
   }
 }
 

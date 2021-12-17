@@ -81,8 +81,6 @@ export default defineComponent({
         instance.value = resp.data;
       } else {
         instance.value.id = "";
-        instance.value.channelId = "";
-        instance.value.subChannelId = "";
         instance.value.name = "";
         instance.value.senderMobileNumber = "";
         instance.value.city = "";

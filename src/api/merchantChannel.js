@@ -17,6 +17,12 @@ const merchantChannel = {
   },
   paginate: function (params) {
     return api.get('/api/v1/merchantChannel/list', { params })
+  },
+  incr: function (data) {
+    return api.put('/api/v1/merchantChannel/incr', data)
+  },
+  testFee: function (params) {
+    return api.get('/api/v1/merchantChannel/testFee', { params })
   }
 }
 

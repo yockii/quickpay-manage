@@ -64,8 +64,14 @@
               <q-tooltip>{{ $t("update") }}</q-tooltip>
             </q-btn>
 
-            <q-btn flat color="primary" round icon="bug_report" @click="test(props.row)">
-              <q-tooltip>{{ $t("test") }}</q-tooltip>
+            <q-btn
+              flat
+              color="primary"
+              round
+              icon="calculate"
+              @click="openDialogCalcFee(props.row)"
+            >
+              <q-tooltip>{{ $t("testFee") }}</q-tooltip>
             </q-btn>
 
             <q-btn flat color="negative" round icon="delete_forever">
@@ -121,6 +127,12 @@
             class="col-6"
             v-model.number="instance.minAmount"
             :label="$t('subChannel.minAmount')"
+          />
+          <q-input
+            type="textarea"
+            class="col-12"
+            v-model.number="instance.feeExpr"
+            :label="$t('subChannel.feeExpr')"
           />
           <q-input
             class="col-6"
@@ -262,6 +274,14 @@
               </template>
             </q-field>
           </div>
+          <div class="col-12">
+            <q-input
+              type="textarea"
+              readonly
+              :label="$t('subChannel.feeExpr')"
+              v-model="instance.feeExpr"
+            />
+          </div>
           <div class="col-6">
             <q-field :label="$t('subChannel.feeRate')" stack-label>
               <template v-slot:control>
@@ -373,6 +393,12 @@
               v-model.number="instance.minAmount"
             />
           </div>
+          <div class="col-12">
+            <q-input
+              :label="$t('subChannel.feeExpr')"
+              v-model.number="instance.feeExpr"
+            />
+          </div>
           <div class="col-6">
             <q-input
               :label="$t('subChannel.feeRate')"
@@ -417,6 +443,23 @@
       <q-card-actions align="right">
         <q-btn flat :label="$t('cancel')" v-close-popup />
         <q-btn :label="$t('confirm')" @click="update" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+  <q-dialog v-model="dialogTestFee">
+    <q-card class="q-px-sm q-pb-md">
+      <q-card-section>
+        <div class="text-h6">
+          {{ $t("testFee") }}
+        </div>
+      </q-card-section>
+      <q-card-actions>
+        <q-input v-model.number="testAmount" label="Amount" />
+      </q-card-actions>
+      <q-card-actions align="right">
+        <q-btn flat :label="$t('cancel')" v-close-popup />
+        <q-btn :label="$t('confirm')" @click="calcFee" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -528,6 +571,7 @@ export default defineComponent({
       state: 1,
       maxAmount: 1,
       minAmount: 0,
+      feeExpr: "",
       feeRate: 0.0,
       feeFixed: 0,
       fixedAmount: 0,
@@ -585,6 +629,7 @@ export default defineComponent({
       instance.value.state = 1;
       instance.value.maxAmount = 0;
       instance.value.minAmount = 0;
+      instance.value.feeExpr = "";
       instance.value.feeRate = 0.0;
       instance.value.feeFixed = 0;
       instance.value.fixedAmount = 0;
@@ -686,8 +731,25 @@ export default defineComponent({
 
     const channelCode = ref("");
 
-    function test(row) {}
-
+    // test fee
+    const dialogTestFee = ref(false);
+    const testAmount = ref(0);
+    function openDialogCalcFee(row) {
+      instance.value = row;
+      dialogTestFee.value = true;
+    }
+    async function calcFee() {
+      let amount = parseInt(testAmount.value * 100);
+      let resp = await subChannel.testFee({
+        id: instance.value.id,
+        amount,
+      });
+      if (resp.code === 0) {
+        let msg = resp.msg || "";
+        msg += ", result: " + (resp.data || 0) / 100;
+        $q.dialog({ message: msg });
+      }
+    }
     onMounted(() => {
       condition.value.channelId = $route.query.channelId;
       instance.value.channelId = $route.query.channelId;
@@ -714,7 +776,10 @@ export default defineComponent({
       stateOptions,
       channelCode,
       typeOptions,
-      test,
+      openDialogCalcFee,
+      dialogTestFee,
+      testAmount,
+      calcFee,
     };
   },
 });
