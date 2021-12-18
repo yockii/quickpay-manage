@@ -111,10 +111,19 @@
             </q-field>
           </div>
           <div class="col-6">
-            <q-field :label="$t('payoutOrder.beneficiaryName')" stack-label>
+            <q-field :label="$t('payoutOrder.firstName')" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ instance.beneficiaryName }}
+                  {{ instance.firstName }}
+                </div>
+              </template>
+            </q-field>
+          </div>
+          <div class="col-6">
+            <q-field :label="$t('payoutOrder.lastName')" stack-label>
+              <template v-slot:control>
+                <div class="self-center full-width no-outline" tabindex="0">
+                  {{ instance.lastName }}
                 </div>
               </template>
             </q-field>
@@ -201,10 +210,17 @@ export default defineComponent({
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
       {
-        name: "beneficiaryName",
-        label: $t("payoutOrder.beneficiaryName"),
+        name: "firstName",
+        label: $t("payoutOrder.firstName"),
         align: "center",
-        field: (row) => row.beneficiaryName,
+        field: (row) => row.firstName,
+        format: (val) => `${val}`,
+      },
+      {
+        name: "lastName",
+        label: $t("payoutOrder.lastName"),
+        align: "center",
+        field: (row) => row.lastName,
         format: (val) => `${val}`,
       },
       {
@@ -233,7 +249,8 @@ export default defineComponent({
       fee: 0,
       remark: "",
       accountNumber: "",
-      beneficiaryName: "",
+      firstName: "",
+      lastName: "",
       bankName: "",
       branchName: "",
       state: "",
