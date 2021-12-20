@@ -217,7 +217,6 @@
           </div>
           <div class="col-12">
             <q-input
-              type="textarea"
               readonly
               :label="$t('merchantChannel.feeExpr')"
               v-model="instance.feeExpr"
@@ -365,7 +364,6 @@
           </div>
           <div class="col-12">
             <q-input
-              type="textarea"
               v-model.number="instance.feeExpr"
               :label="$t('merchantChannel.feeExpr')"
             />
@@ -569,6 +567,7 @@ export default defineComponent({
             row.dailyLimit = row.dailyLimit == -1 ? -1 : row.dailyLimit / 100;
             row.dailyAmount = row.dailyAmount == -1 ? -1 : row.dailyAmount / 100;
             row.fixedAmount = row.fixedAmount == -1 ? -1 : row.fixedAmount / 100;
+            row.feeFixed = row.feeFixed == -1 ? -1 : row.feeFixed / 100;
             row.balance = row.balance ? row.balance / 100 : 0;
             row.frozen = row.frozen ? row.frozen / 100 : 0;
             row.totalIncome = row.totalIncome ? row.totalIncome / 100 : 0;
