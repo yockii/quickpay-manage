@@ -17,6 +17,9 @@ const payoutOrder = {
   },
   paginate: function (params) {
     return api.get('/api/v1/payoutOrder/list', { params })
+  },
+  fix: function (data) {
+    return api.put('/api/v1/payoutOrder/fix', data)
   }
 }
 

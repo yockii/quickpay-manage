@@ -32,6 +32,7 @@ export default {
   addMoney: 'Add Balance',
   addMoneyMessage: 'Add balance with POSITIVE number, deduct balance with NEGATIVE number. Operated on Channel: ',
   testFee: 'Test Calculate Fee',
+  fixOrder: 'Manually Fix',
   navigation: {
     merchant: 'Merchant',
     merchantCaption: 'Merchant info, secret & callback url etc.',
@@ -100,6 +101,7 @@ export default {
   order: {
     id: 'trsaction ID',
     merchantId: 'Merchant ID',
+    merchantName: 'Merchant Name',
     channelCode: 'Channel Code',
     tradeId: 'Merchant Trade ID',
     amount: 'Amount',
@@ -163,6 +165,7 @@ export default {
   payoutOrder: {
     id: 'trsaction ID',
     merchantId: 'Merchant ID',
+    merchantName: 'Merchant Name',
     channelCode: 'Channel Code',
     tradeId: 'Merchant Trade ID',
     amount: 'Amount',
@@ -173,6 +176,8 @@ export default {
     bankName: 'Bank Name',
     branchName: 'Branch Name',
     bankCode: 'Bank Code',
+    failureReason: "Failure Reason",
+    createTime: 'Create Time',
     status: 'Status',
     status1: 'Created',
     status2: 'Verify Pending',
@@ -182,6 +187,7 @@ export default {
     status6: 'Paid',
     status01: 'Verify Failed',
     status02: 'Pay Failed',
+    status03: 'Reversed',
   },
   odinmoSender: {
     name: 'Name',

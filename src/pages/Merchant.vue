@@ -366,6 +366,7 @@ export default defineComponent({
       totalIncome: 0,
       totalRealIncome: 0,
       totalPayout: 0,
+      totalRealPayout: 0,
       payCallbackUrl: "",
       payoutCallbackUrl: "",
       redirectUrl: "",

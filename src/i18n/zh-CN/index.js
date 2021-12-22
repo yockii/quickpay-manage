@@ -29,6 +29,7 @@ export default {
   addMoney: '添加资金',
   addMoneyMessage: '正数添加资金，负数扣除资金，操作渠道：',
   testFee: '手续费试算',
+  fixOrder: '手动补单',
   navigation: {
     merchant: '商户管理',
     merchantCaption: '商户信息、密钥、回调地址配置等管理',
@@ -97,6 +98,7 @@ export default {
   order: {
     id: '交易ID',
     merchantId: '商户ID',
+    merchantName: '商户名称',
     channelCode: '通道代码',
     tradeId: '商户交易ID',
     amount: '交易金额',
@@ -160,6 +162,7 @@ export default {
   payoutOrder: {
     id: '交易ID',
     merchantId: '商户ID',
+    merchantName: '商户名称',
     channelCode: '通道代码',
     tradeId: '商户交易ID',
     amount: '交易金额',
@@ -170,6 +173,8 @@ export default {
     bankName: '银行',
     branchName: '支行',
     bankCode: '银行IFSC代码',
+    failureReason: "失败原因",
+    createTime: '创建时间',
     status: '状态',
     status1: '已创建',
     status2: '验证中',
@@ -179,6 +184,7 @@ export default {
     status6: '已支付',
     status01: '验证失败',
     status02: '支付失败',
+    status03: '已撤销',
   },
   odinmoSender: {
     name: '姓名',
