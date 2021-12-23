@@ -240,10 +240,10 @@ export default defineComponent({
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
       {
-        name: "payUser",
-        label: $t("order.payUser"),
+        name: "createTime",
+        label: $t("order.createTime"),
         align: "center",
-        field: (row) => row.payUser,
+        field: (row) => row.createTime,
         format: (val) => `${val}`,
       },
       {
