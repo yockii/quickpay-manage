@@ -5,6 +5,7 @@
       <q-breadcrumbs-el
         :label="$t('navigation.merchant') + ': ' + merchantName"
         icon="streetview"
+        to="/merchant"
       />
       <q-breadcrumbs-el :label="$t('navigation.merchantChannel')" icon="view_stream" />
     </q-breadcrumbs>

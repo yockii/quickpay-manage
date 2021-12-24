@@ -42,6 +42,10 @@ const routes = [{
     component: () => import('pages/MerchantChannel.vue')
   },
   {
+    path: '/merchantAccount',
+    component: () => import('pages/MerchantAccount.vue')
+  },
+  {
     path: '/settings',
     component: () => import('pages/Settings.vue')
   },

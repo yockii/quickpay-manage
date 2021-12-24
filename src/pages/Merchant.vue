@@ -70,6 +70,16 @@
               <q-tooltip>{{ $t("dispatchChannel") }}</q-tooltip>
             </q-btn>
 
+            <q-btn
+              flat
+              color="primary"
+              round
+              icon="recent_actors"
+              :to="`/merchantAccount?merchantId=${props.row.id}&merchantName=${props.row.name}`"
+            >
+              <q-tooltip>{{ $t("dispatchAccount") }}</q-tooltip>
+            </q-btn>
+
             <q-btn flat color="negative" round icon="delete_forever">
               <q-tooltip>{{ $t("delete") }}</q-tooltip>
               <q-popup-proxy>
@@ -351,6 +361,13 @@ export default defineComponent({
         label: $t("merchantField.totalPayout"),
         align: "center",
         field: (row) => row.totalPayout,
+        format: (val) => (val ? `${val / 100}` : "0.00"),
+      },
+      {
+        name: "totalRealPayout",
+        label: $t("merchantField.totalRealPayout"),
+        align: "center",
+        field: (row) => row.totalRealPayout,
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
     ];

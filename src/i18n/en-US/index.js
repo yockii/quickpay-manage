@@ -33,6 +33,7 @@ export default {
   addMoneyMessage: 'Add balance with POSITIVE number, deduct balance with NEGATIVE number. Operated on Channel: ',
   testFee: 'Test Calculate Fee',
   fixOrder: 'Manually Fix',
+  dispatchAccount: 'Dispatch Account',
   navigation: {
     merchant: 'Merchant',
     merchantCaption: 'Merchant info, secret & callback url etc.',
@@ -50,6 +51,7 @@ export default {
     merchantChannel: 'Merchant\'s Channel',
     settings: 'Settings',
     settingsCaption: 'Settings For Miscellaneous',
+    merchantAccount: 'Merchant Account',
   },
   merchantField: {
     id: 'Merchant ID',
@@ -58,7 +60,8 @@ export default {
     frozen: 'Frozen Balance',
     totalIncome: 'Total Income(With Fee)',
     totalRealIncome: 'Total Income',
-    totalPayout: 'Total Payout',
+    totalPayout: 'Total Payout(Without Fee)',
+    totalRealPayout: 'Total Payout',
     payCallbackUrl: 'Pay in Callback Url',
     payoutCallbackUrl: 'Pay out Callback Url',
     redirectUrl: 'Redirect Url',
@@ -199,5 +202,10 @@ export default {
     status: 'Status',
     status1: 'Created',
     status0: 'Failed',
+  },
+  merchantAccount: {
+    username: 'Username',
+    password: 'Password',
+    createTime: 'Create Time',
   }
 }

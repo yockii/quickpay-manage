@@ -30,6 +30,7 @@ export default {
   addMoneyMessage: '正数添加资金，负数扣除资金，操作渠道：',
   testFee: '手续费试算',
   fixOrder: '手动补单',
+  dispatchAccount: '分配账号',
   navigation: {
     merchant: '商户管理',
     merchantCaption: '商户信息、密钥、回调地址配置等管理',
@@ -47,6 +48,7 @@ export default {
     merchantChannel: '商户通道',
     settings: '其他设置',
     settingsCaption: '其他一些杂项的信息配置',
+    merchantAccount: '商户账号',
   },
   merchantField: {
     id: '商户ID',
@@ -55,7 +57,8 @@ export default {
     frozen: '冻结资金',
     totalIncome: '总入账流水',
     totalRealIncome: '总入账金额',
-    totalPayout: '总出账',
+    totalPayout: '总出账(无手续费)',
+    totalRealPayout: '总出账',
     payCallbackUrl: '代收回调地址',
     payoutCallbackUrl: '代付回调地址',
     redirectUrl: '跳转地址',
@@ -196,5 +199,10 @@ export default {
     status: '状态',
     status1: '已创建',
     status0: '创建失败',
+  },
+  merchantAccount: {
+    username: '用户名',
+    password: '密码',
+    createTime: '创建时间',
   }
 }
