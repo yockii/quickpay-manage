@@ -66,7 +66,7 @@
             >
               <q-tooltip>{{ $t("showDetail") }}</q-tooltip>
             </q-btn>
-            <q-btn icon="auto_fix_high" color="primary" flat>
+            <q-btn icon="auto_fix_high" color="primary" flat round>
               <q-tooltip>{{ $t("fixOrder") }}</q-tooltip>
               <q-popup-proxy>
                 <q-btn-group>
@@ -85,7 +85,7 @@
                 </q-btn-group>
               </q-popup-proxy>
             </q-btn>
-            <q-btn icon="" color="primary" flat>
+            <q-btn icon="add_alert" color="primary" flat round>
               <q-tooltip>{{ $t("reNotify") }}</q-tooltip>
               <q-popup-proxy>
                 <q-card class="q-pa-sm">
@@ -283,7 +283,7 @@ export default defineComponent({
         name: "urt",
         label: "UTR",
         align: "center",
-        field: (row) => row.urt,
+        field: (row) => row.urt || "",
         format: (val) => `${val}`,
       },
       {

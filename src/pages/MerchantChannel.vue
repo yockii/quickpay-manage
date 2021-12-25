@@ -74,7 +74,7 @@
               color="primary"
               round
               icon="price_change"
-              @click="addMoney(props.row)"
+              @click="openIncreaseAmountDialog(props.row)"
             >
               <q-tooltip>{{ $t("addMoney") }}</q-tooltip>
             </q-btn>
@@ -436,6 +436,33 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+
+  <q-dialog v-model="dialogIncreaseAmount">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{ $t("addMoney") }}</div>
+      </q-card-section>
+      <q-card-section>
+        {{
+          $t("addMoneyMessage") +
+          increaseInstance.channelName +
+          " - " +
+          increaseInstance.subChannelName
+        }}
+      </q-card-section>
+      <q-card-section>
+        <q-input :label="$t('addMoney')" v-model.number="increaseInstance.amount" />
+        <q-input
+          :label="$t('merchantChannel.remark')"
+          v-model="increaseInstance.remark"
+        />
+      </q-card-section>
+      <q-card-actions>
+        <q-btn flat :label="$t('cancel')" v-close-popup />
+        <q-btn :label="$t('confirm')" @click="addMoney" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -737,7 +764,15 @@ export default defineComponent({
       }
     }
 
-    function addMoney(row) {
+    const dialogIncreaseAmount = ref(false);
+    const increaseInstance = ref({
+      id: "",
+      channelName: "",
+      subChannelName: "",
+      amount: 0,
+      remark: "",
+    });
+    function openIncreaseAmountDialog(row) {
       let channelName = row.channelId;
       for (let c of channels.value) {
         if (c.id === channelName) {
@@ -745,27 +780,29 @@ export default defineComponent({
           break;
         }
       }
-      $q.dialog({
-        title: $t("addMoney"),
-        message: $t("addMoneyMessage") + channelName + " - " + row.subChannelName,
-        prompt: {
-          model: "0",
-          type: "number",
-        },
-        cancel: true,
-        persistent: true,
-      }).onOk((data) => {
-        merchantChannel
-          .incr({ id: row.id, amount: parseInt(data * 100) })
-          .then((resp) => {
-            if (resp.code === 0) {
-              $q.dialog({ message: $t("success") });
-              getData({ pagination: pagination.value });
-            } else {
-              $q.dialog({ message: $t("failed") });
-            }
-          });
-      });
+      increaseInstance.value.id = row.id;
+      increaseInstance.value.channelName = channelName;
+      increaseInstance.value.subChannelName = row.subChannelName;
+      increaseInstance.value.amount = 0;
+      increaseInstance.value.remark = "";
+      dialogIncreaseAmount.value = true;
+    }
+
+    function addMoney() {
+      merchantChannel
+        .incr({
+          id: increaseInstance.value.id,
+          amount: parseInt(increaseInstance.value.amount * 100),
+          remark: increaseInstance.value.remark,
+        })
+        .then((resp) => {
+          if (resp.code === 0) {
+            $q.dialog({ message: $t("success") });
+            getData({ pagination: pagination.value });
+          } else {
+            $q.dialog({ message: $t("failed") });
+          }
+        });
     }
 
     // test fee
@@ -817,11 +854,14 @@ export default defineComponent({
       channels,
       updateSubChannels,
       subChannels,
-      addMoney,
       openDialogCalcFee,
       dialogTestFee,
       testAmount,
       calcFee,
+      dialogIncreaseAmount,
+      increaseInstance,
+      openIncreaseAmountDialog,
+      addMoney,
     };
   },
 });
