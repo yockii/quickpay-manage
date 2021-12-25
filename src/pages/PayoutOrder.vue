@@ -85,6 +85,25 @@
                 </q-btn-group>
               </q-popup-proxy>
             </q-btn>
+            <q-btn icon="" color="primary" flat>
+              <q-tooltip>{{ $t("reNotify") }}</q-tooltip>
+              <q-popup-proxy>
+                <q-card class="q-pa-sm">
+                  <q-card-section>
+                    {{ $t("reNotifyConfirm") }}
+                  </q-card-section>
+                  <q-card-actions>
+                    <q-btn size="sm" flat :label="$t('cancel')" v-close-popup />
+                    <q-btn
+                      size="sm"
+                      color="negative"
+                      :label="$t('confirm')"
+                      @click="reNotify(props.row.id)"
+                    />
+                  </q-card-actions>
+                </q-card>
+              </q-popup-proxy>
+            </q-btn>
           </q-td>
         </q-tr>
       </template>
@@ -261,6 +280,13 @@ export default defineComponent({
         format: (val) => `${val}`,
       },
       {
+        name: "urt",
+        label: "UTR",
+        align: "center",
+        field: (row) => row.urt,
+        format: (val) => `${val}`,
+      },
+      {
         name: "amount",
         label: $t("payoutOrder.amount"),
         align: "center",
@@ -401,6 +427,15 @@ export default defineComponent({
       });
     }
 
+    async function reNotify(id) {
+      const resp = await payoutOrder.renotify(id);
+      if (resp.code === 0) {
+        $q.dialog({ message: $t("success") });
+      } else {
+        $q.dialog({ message: $t("failed") });
+      }
+    }
+
     onMounted(() => {
       getData({ pagination: pagination.value });
     });
@@ -415,6 +450,7 @@ export default defineComponent({
       dialogInfo,
       openInfoDialog,
       fixOrder,
+      reNotify,
     };
   },
 });

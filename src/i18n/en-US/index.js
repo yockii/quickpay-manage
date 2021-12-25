@@ -34,6 +34,8 @@ export default {
   testFee: 'Test Calculate Fee',
   fixOrder: 'Manually Fix',
   dispatchAccount: 'Dispatch Account',
+  reNotify: "Renotify",
+  reNotifyConfirm: "Confirm to Renotify",
   navigation: {
     merchant: 'Merchant',
     merchantCaption: 'Merchant info, secret & callback url etc.',
@@ -42,7 +44,7 @@ export default {
     order: 'Pay Order',
     orderCaption: 'Pay in orders, includes manual add balance order',
     payoutOrder: 'Payout Order',
-    payoutCaption: 'Pay out orders, includes manual minus balance order',
+    payoutOrderCaption: 'Pay out orders, includes manual minus balance order',
     user: 'User',
     userCaption: 'User for background manage and role dispatch',
     authorize: 'Authorize',
@@ -206,6 +208,7 @@ export default {
   merchantAccount: {
     username: 'Username',
     password: 'Password',
+    newPassword: 'New Password',
     createTime: 'Create Time',
   }
 }

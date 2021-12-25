@@ -31,6 +31,8 @@ export default {
   testFee: '手续费试算',
   fixOrder: '手动补单',
   dispatchAccount: '分配账号',
+  reNotify: "重新通知",
+  reNotifyConfirm: "确认重新推送",
   navigation: {
     merchant: '商户管理',
     merchantCaption: '商户信息、密钥、回调地址配置等管理',
@@ -39,7 +41,7 @@ export default {
     order: '支付订单管理',
     orderCaption: '支付订单查询，包括手动加款订单',
     payoutOrder: '代付订单管理',
-    payoutCaption: '代付订单查询，包括手动减款订单',
+    payoutOrderCaption: '代付订单查询，包括手动减款订单',
     user: '用户管理',
     userCaption: '后台管理用户及用户角色分配管理',
     authorize: '权限管理',
@@ -203,6 +205,7 @@ export default {
   merchantAccount: {
     username: '用户名',
     password: '密码',
+    newPassword: '新密码',
     createTime: '创建时间',
   }
 }

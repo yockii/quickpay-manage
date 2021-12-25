@@ -105,8 +105,14 @@
           </div>
           <div class="col-6">
             <q-input
-              v-model.number="instance.password"
+              v-model="instance.password"
               :label="$t('merchantAccount.password')"
+            />
+          </div>
+          <div class="col-6">
+            <q-input
+              v-model="instance.newPassword"
+              :label="$t('merchantAccount.newPassword')"
             />
           </div>
         </div>
@@ -158,6 +164,7 @@ export default defineComponent({
       username: "",
       password: "",
       createTime: "",
+      newPassword: "",
     });
     const rows = ref([]);
     const loading = ref(false);
@@ -193,6 +200,7 @@ export default defineComponent({
       instance.value.username = "";
       instance.value.password = "";
       instance.value.createTime = "";
+      instance.value.newPassword = "";
     }
 
     const dialogAdd = ref(false);
@@ -229,13 +237,7 @@ export default defineComponent({
       try {
         const obj = {};
         Object.assign(obj, instance.value);
-        dealNumber(obj);
 
-        obj.balance = 0;
-        obj.frozen = 0;
-        obj.totalIncome = 0;
-        obj.totalMerchantIncome = 0;
-        obj.totalPayout = 0;
         const resp = await merchantAccount.update(obj);
         if (resp.code === 0) {
           $q.dialog({ message: $t("success") });

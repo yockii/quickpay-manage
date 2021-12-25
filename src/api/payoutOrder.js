@@ -20,6 +20,9 @@ const payoutOrder = {
   },
   fix: function (data) {
     return api.put('/api/v1/payoutOrder/fix', data)
+  },
+  renotify: function (id) {
+    return api.put(`/api/v1/payoutOrder/reNotify?${id}`)
   }
 }
 
