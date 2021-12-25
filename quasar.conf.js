@@ -88,14 +88,14 @@ module.exports = configure(function (ctx) {
       open: true, // opens browser window automatically
       proxy: {
         '/api': {
-          target: 'http://localhost:8088',
+          target: 'https://paymanage.flashpayme.com', // 'http://localhost:8088',
           changeOrigin: true,
           // pathRewrite: {
           //   '^/api': ''
           // }
         },
         '/login': {
-          target: 'http://localhost:8088',
+          target: 'https://paymanage.flashpayme.com',
           changeOrigin: true,
         }
       }

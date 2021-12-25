@@ -151,6 +151,15 @@
               </template>
             </q-field>
           </div>
+          <div class="col-12">
+            <q-field :label="$t('order.remark')" stack-label>
+              <template v-slot:control>
+                <div class="self-center full-width no-outline" tabindex="0">
+                  {{ instance.remark }}
+                </div>
+              </template>
+            </q-field>
+          </div>
           <div class="col-6">
             <q-field :label="$t('order.successTime')" stack-label>
               <template v-slot:control>
@@ -238,6 +247,14 @@ export default defineComponent({
         align: "center",
         field: (row) => row.channelFee,
         format: (val) => (val ? `${val / 100}` : "0.00"),
+      },
+      {
+        name: "remark",
+        label: $t("order.remark"),
+        align: "left",
+        field: (row) => row.remark,
+        format: (val) =>
+          val ? (val.length > 36 ? val.substring(0, 34) + "..." : val) : "",
       },
       {
         name: "createTime",
