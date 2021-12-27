@@ -28,6 +28,69 @@
         emit-value
         map-options
       />
+      <q-input
+        v-model="condition.createTimeRange.start"
+        :label="$t('startTime')"
+        readonly
+      >
+        <template v-slot:prepend>
+          <q-icon name="event" class="cursor-pointer">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-date
+                v-model="condition.createTimeRange.start"
+                mask="YYYY-MM-DD HH:mm:ss"
+              >
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup :label="$t('close')" color="primary" flat />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+        <template v-slot:append>
+          <q-icon name="access_time" class="cursor-pointer">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-time
+                v-model="condition.createTimeRange.start"
+                mask="YYYY-MM-DD HH:mm:ss"
+                format24h
+              >
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup :label="$t('close')" color="primary" flat />
+                </div>
+              </q-time>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+      <q-input v-model="condition.createTimeRange.end" :label="$t('endTime')">
+        <template v-slot:prepend>
+          <q-icon name="event" class="cursor-pointer">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-date v-model="condition.createTimeRange.end" mask="YYYY-MM-DD HH:mm:ss">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup :label="$t('close')" color="primary" flat />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+        <template v-slot:append>
+          <q-icon name="access_time" class="cursor-pointer">
+            <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+              <q-time
+                v-model="condition.createTimeRange.end"
+                mask="YYYY-MM-DD HH:mm:ss"
+                format24h
+              >
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup :label="$t('close')" color="primary" flat />
+                </div>
+              </q-time>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
       <!-- <q-space /> -->
       <q-btn class="self-end" icon="search" @click="getData({ pagination })">
         <q-tooltip>{{ $t("search") }}</q-tooltip>
@@ -352,6 +415,10 @@ export default defineComponent({
       tradeId: "",
       merchantName: "",
       status: 0,
+      createTimeRange: {
+        start: "",
+        end: "",
+      },
     });
     const instance = ref({
       id: "",
@@ -396,6 +463,8 @@ export default defineComponent({
           tradeId: condition.value.tradeId,
           merchantName: condition.value.merchantName,
           status: condition.value.status,
+          "createTimeRange.start": condition.value.createTimeRange.start,
+          "createTimeRange.end": condition.value.createTimeRange.end,
         });
         if (resp.code === 0) {
           rows.value = resp.data.items || [];

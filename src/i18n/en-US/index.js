@@ -7,6 +7,7 @@ export default {
   username: 'Username',
   password: 'Password',
   cancel: 'Cancel',
+  close: 'Close',
   tips: 'Tips',
   usernameAndPasswordMustProvided: 'Username And Password Must Provided',
   confirm: 'Confirm',
@@ -36,6 +37,8 @@ export default {
   dispatchAccount: 'Dispatch Account',
   reNotify: "Renotify",
   reNotifyConfirm: "Confirm to Renotify",
+  startTime: 'Start Time',
+  endTime: 'End Time',
   navigation: {
     merchant: 'Merchant',
     merchantCaption: 'Merchant info, secret & callback url etc.',
@@ -194,6 +197,7 @@ export default {
     status01: 'Verify Failed',
     status02: 'Pay Failed',
     status03: 'Reversed',
+    status04: 'Pay Failed(Overtime)',
   },
   odinmoSender: {
     name: 'Name',
