@@ -183,6 +183,7 @@ export default {
     bankCode: 'Bank Code',
     failureReason: "Failure Reason",
     createTime: 'Create Time',
+    remark: 'Remark',
     status: 'Status',
     status1: 'Created',
     status2: 'Verify Pending',

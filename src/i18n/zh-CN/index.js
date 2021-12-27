@@ -180,6 +180,7 @@ export default {
     bankCode: '银行IFSC代码',
     failureReason: "失败原因",
     createTime: '创建时间',
+    remark: '备注',
     status: '状态',
     status1: '已创建',
     status2: '验证中',
