@@ -194,6 +194,11 @@
             v-model="instance.remark"
             :label="$t('subChannel.remark')"
           />
+          <q-input
+            class="col-6"
+            v-model="instance.baseUrl"
+            :label="$t('subChannel.baseUrl')"
+          />
           <q-select
             class="col-6"
             :label="$t('subChannel.state')"
@@ -377,6 +382,9 @@
               :label="$t('subChannel.virtualAccountId')"
               v-model="instance.virtualAccountId"
             />
+          </div>
+          <div class="col-6">
+            <q-input :label="$t('subChannel.baseUrl')" v-model="instance.baseUrl" />
           </div>
           <div class="col-6">
             <q-input :label="$t('subChannel.remark')" v-model="instance.remark" />
@@ -567,6 +575,7 @@ export default defineComponent({
       secretExt1: "",
       secretExt2: "",
       virtualAccountId: "",
+      baseUrl: "",
       remark: "",
       state: 1,
       maxAmount: 1,
@@ -625,6 +634,7 @@ export default defineComponent({
       instance.value.secretExt1 = "";
       instance.value.secretExt2 = "";
       instance.value.virtualAccountId = "";
+      instance.value.baseUrl = "";
       instance.value.remark = "";
       instance.value.state = 1;
       instance.value.maxAmount = 0;
