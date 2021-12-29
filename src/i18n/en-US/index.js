@@ -103,6 +103,7 @@ export default {
     merchantNo: 'Merchant No',
     secretKey: 'Secret Key',
     remark: 'Remark',
+    baseUrl: 'Base URL',
     state: 'State',
     createTime: 'Create Time'
   },
