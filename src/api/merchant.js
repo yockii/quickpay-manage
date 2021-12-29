@@ -17,6 +17,9 @@ const merchant = {
   },
   paginate: function (params) {
     return api.get('/api/v1/merchant/list', { params })
+  },
+  payoutReconciliation: function (id) {
+    return api.put(`/api/v1/merchant/payoutReconciliation/${id}`)
   }
 }
 

@@ -80,6 +80,26 @@
               <q-tooltip>{{ $t("dispatchAccount") }}</q-tooltip>
             </q-btn>
 
+            <q-btn flat color="warning" round icon="price_check">
+              <q-tooltip>{{ $t("autoReconciliation") }}</q-tooltip>
+              <q-popup-proxy>
+                <q-card class="q-pa-sm">
+                  <q-card-section>
+                    {{ $t("autoReconciliationConfirm") }}
+                  </q-card-section>
+                  <q-card-actions>
+                    <q-btn size="sm" flat :label="$t('cancel')" v-close-popup />
+                    <q-btn
+                      size="sm"
+                      color="negative"
+                      :label="$t('confirm')"
+                      @click="autoReconciliation(props.row.id)"
+                    />
+                  </q-card-actions>
+                </q-card>
+              </q-popup-proxy>
+            </q-btn>
+
             <q-btn flat color="negative" round icon="delete_forever">
               <q-tooltip>{{ $t("delete") }}</q-tooltip>
               <q-popup-proxy>
@@ -500,6 +520,21 @@ export default defineComponent({
       }
     }
 
+    async function autoReconciliation(id) {
+      if (id) {
+        try {
+          const resp = await merchant.payoutReconciliation(id);
+          if (resp.code === 0) {
+            $q.dialog({ message: $t("success") });
+            getData({ pagination: pagination.value });
+          } else {
+            $q.dialog({ message: $t("failed") });
+          }
+        } finally {
+        }
+      }
+    }
+
     onMounted(() => {
       getData({ pagination: pagination.value });
     });
@@ -520,6 +555,7 @@ export default defineComponent({
       openUpdateDialog,
       update,
       remove,
+      autoReconciliation,
     };
   },
 });

@@ -36,6 +36,8 @@ export default {
   reNotifyConfirm: "确认重新推送",
   startTime: "开始时间",
   endTime: "结束时间",
+  autoReconciliation: '自动对账',
+  autoReconciliationConfirm: '确定开始自动对账(将暂时禁用完成后开启)',
   navigation: {
     merchant: "商户管理",
     merchantCaption: "商户信息、密钥、回调地址配置等管理",

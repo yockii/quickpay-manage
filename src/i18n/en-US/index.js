@@ -39,6 +39,8 @@ export default {
   reNotifyConfirm: "Confirm to Renotify",
   startTime: 'Start Time',
   endTime: 'End Time',
+  autoReconciliation: 'Auto Reconciliation',
+  autoReconciliationConfirm: 'Confirm to Auto Reconciliation(Will be Disabled and opened after finished)',
   navigation: {
     merchant: 'Merchant',
     merchantCaption: 'Merchant info, secret & callback url etc.',

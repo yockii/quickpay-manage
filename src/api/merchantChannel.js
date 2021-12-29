@@ -23,6 +23,9 @@ const merchantChannel = {
   },
   testFee: function (params) {
     return api.get('/api/v1/merchantChannel/testFee', { params })
+  },
+  payoutReconciliation: function (id) {
+    return api.put(`/api/v1/merchantChannel/payoutReconciliation/${id}`)
   }
 }
 

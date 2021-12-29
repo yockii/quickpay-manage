@@ -17,6 +17,9 @@ const channel = {
   },
   paginate: function (params) {
     return api.get('/api/v1/channel/list', { params })
+  },
+  payoutReconciliation: function (id) {
+    return api.put(`/api/v1/channel/payoutReconciliation/${id}`)
   }
 }
 
