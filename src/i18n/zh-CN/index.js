@@ -100,6 +100,7 @@ export default {
     merchantNo: "商户号",
     secretKey: "密钥",
     remark: "备注",
+    baseUrl: '接口地址',
     state: "状态",
     createTime: "创建时间",
   },
