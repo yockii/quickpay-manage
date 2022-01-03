@@ -30,6 +30,7 @@ export default {
   dispatch: 'Dispatch',
   noModifyWithSuper: 'Cannot Modify Super Administrator Role',
   dispatchChannel: 'Dispatch Channel',
+  controlChannel: 'Control Channel',
   addMoney: 'Add Balance',
   addMoneyMessage: 'Add balance with POSITIVE number, deduct balance with NEGATIVE number. Operated on Channel: ',
   testFee: 'Test Calculate Fee',

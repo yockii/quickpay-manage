@@ -27,6 +27,7 @@ export default {
   dispatch: "分配",
   noModifyWithSuper: "无法更改超级管理员角色",
   dispatchChannel: "分配通道",
+  controlChannel: '控制通道',
   addMoney: "添加资金",
   addMoneyMessage: "正数添加资金，负数扣除资金，操作渠道：",
   testFee: "手续费试算",

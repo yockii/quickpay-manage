@@ -14,6 +14,14 @@
       <q-btn class="self-end" color="primary" icon="add" @click="openAddDialog">
         <q-tooltip>{{ $t("add") }}</q-tooltip>
       </q-btn>
+      <q-btn
+        class="self-end"
+        color="primary"
+        icon="videogame_asset"
+        @click="dialogMerchantChannelControl = true"
+      >
+        <q-tooltip>{{ $t("controlChannel") }}</q-tooltip>
+      </q-btn>
     </div>
     <!-- 表格 -->
     <q-table
@@ -483,6 +491,10 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+
+  <q-dialog v-model="dialogMerchantChannelControl">
+    <merchant-channel-control :merchantChannels="rows" />
+  </q-dialog>
 </template>
 
 <script>
@@ -493,7 +505,10 @@ import { merchantChannel } from "../api/merchantChannel";
 import { useI18n } from "vue-i18n";
 import { useQuasar } from "quasar";
 import { useRoute } from "vue-router";
+import MerchantChannelControl from "components/MerchantChannelControl.vue";
+
 export default defineComponent({
+  components: { MerchantChannelControl },
   name: "PageMerchantChannel",
   setup() {
     const { t: $t } = useI18n();
@@ -860,6 +875,8 @@ export default defineComponent({
       }
     }
 
+    const dialogMerchantChannelControl = ref(false);
+
     onMounted(() => {
       getData({ pagination: pagination.value });
       channel.paginate({ offset: -1, limit: -1 }).then((resp) => {
@@ -898,6 +915,7 @@ export default defineComponent({
       openIncreaseAmountDialog,
       addMoney,
       autoReconciliation,
+      dialogMerchantChannelControl,
     };
   },
 });
