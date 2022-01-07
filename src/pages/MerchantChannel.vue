@@ -377,6 +377,16 @@
               "
               emit-value
               map-options
+              @update:model-value="updateSubChannels"
+            />
+            <q-select
+              :label="$t('merchantChannel.subChannel')"
+              v-model="instance.subChannelId"
+              :options="subChannels"
+              option-value="id"
+              :option-label="(item) => (item === null ? '' : item.subName)"
+              emit-value
+              map-options
             />
           </div>
           <div class="col-6">
