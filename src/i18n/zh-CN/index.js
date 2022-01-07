@@ -72,6 +72,9 @@ export default {
     redirectUrl: "跳转地址",
     secret: "密钥",
     createTime: "创建时间",
+    status: "状态",
+    status1: '正常',
+    status01: '不可用'
   },
   channel: {
     id: "通道ID",

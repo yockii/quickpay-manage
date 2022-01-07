@@ -74,7 +74,9 @@ export default {
     payoutCallbackUrl: 'Pay out Callback Url',
     redirectUrl: 'Redirect Url',
     secret: 'Secret Key',
-    createTime: 'Create Time'
+    createTime: 'Create Time',
+    status1: 'Available',
+    status01: 'Unavailable'
   },
   channel: {
     id: 'Channel ID',

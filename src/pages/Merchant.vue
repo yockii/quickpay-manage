@@ -144,6 +144,13 @@
           v-model="instance.redirectUrl"
           :label="$t('merchantField.redirectUrl')"
         />
+        <q-select
+          :label="$t('merchantField.status')"
+          v-model="instance.status"
+          :options="statusOptions"
+          emit-value
+          map-options
+        />
       </q-card-section>
       <q-card-actions align="right">
         <q-btn flat :label="$t('cancel')" v-close-popup />
@@ -258,6 +265,16 @@
               </template>
             </q-field>
           </div>
+          <div class="col-6">
+            <q-select
+              readonly
+              :label="$t('merchantField.status')"
+              v-model="instance.status"
+              :options="statusOptions"
+              emit-value
+              map-options
+            />
+          </div>
         </div>
       </q-card-section>
       <q-card-actions align="right">
@@ -311,6 +328,15 @@
                 </div>
               </template>
             </q-field>
+          </div>
+          <div class="col-6">
+            <q-select
+              :label="$t('merchantField.status')"
+              v-model="instance.status"
+              :options="statusOptions"
+              emit-value
+              map-options
+            />
           </div>
         </div>
       </q-card-section>
@@ -390,6 +416,14 @@ export default defineComponent({
         field: (row) => row.totalRealPayout,
         format: (val) => (val ? `${val / 100}` : "0.00"),
       },
+      {
+        name: "status",
+        label: $t("merchantField.status"),
+        align: "center",
+        field: (row) => row.status,
+        format: (val) =>
+          val == 1 ? $t("merchantField.status1") : $t("merchantField.status01"),
+      },
     ];
     const condition = ref({
       id: "",
@@ -408,6 +442,7 @@ export default defineComponent({
       payoutCallbackUrl: "",
       redirectUrl: "",
       secret: "",
+      status: 0,
     });
     const rows = ref([]);
     const loading = ref(false);
@@ -449,6 +484,7 @@ export default defineComponent({
       instance.value.callbackUrl = "";
       instance.value.redirectUrl = "";
       instance.value.secret = "";
+      instance.value.status = 0;
     }
 
     const dialogAdd = ref(false);
@@ -535,6 +571,11 @@ export default defineComponent({
       }
     }
 
+    const statusOptions = ref([
+      { label: $t("available"), value: 1 },
+      { label: $t("unavailable"), value: -1 },
+    ]);
+
     onMounted(() => {
       getData({ pagination: pagination.value });
     });
@@ -556,6 +597,7 @@ export default defineComponent({
       update,
       remove,
       autoReconciliation,
+      statusOptions,
     };
   },
 });
