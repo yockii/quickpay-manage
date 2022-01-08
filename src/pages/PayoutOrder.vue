@@ -95,6 +95,13 @@
       <q-btn class="self-end" icon="search" @click="getData({ pagination })">
         <q-tooltip>{{ $t("search") }}</q-tooltip>
       </q-btn>
+      <q-btn
+        class="self-end"
+        icon="file_download"
+        @click="exportExcel"
+        :loading="exporting"
+        ><template v-slot:loading> <q-spinner-facebook /> </template
+      ></q-btn>
     </div>
     <!-- 表格 -->
     <q-table
@@ -552,6 +559,37 @@ export default defineComponent({
       dialogProof.value = true;
     }
 
+    const exporting = ref(false);
+
+    function exportExcel() {
+      exporting.value = true;
+      payoutOrder
+        .export({
+          id: condition.value.id,
+          channelCode: condition.value.channelCode,
+          tradeId: condition.value.tradeId,
+          merchantName: condition.value.merchantName,
+          status: condition.value.status,
+          "createTimeRange.start": condition.value.createTimeRange.start,
+          "createTimeRange.end": condition.value.createTimeRange.end,
+        })
+        .then((res) => {
+          const filename = res.headers["content-disposition"];
+          const blob = new Blob([res.data]);
+          var downloadElement = document.createElement("a");
+          var href = window.URL.createObjectURL(blob);
+          downloadElement.href = href;
+          downloadElement.download = decodeURIComponent(filename.split("filename=")[1]);
+          document.body.appendChild(downloadElement);
+          downloadElement.click();
+          document.body.removeChild(downloadElement);
+          window.URL.revokeObjectURL(href);
+        })
+        .finally(() => {
+          exporting.value = false;
+        });
+    }
+
     onMounted(() => {
       getData({ pagination: pagination.value });
     });
@@ -569,6 +607,8 @@ export default defineComponent({
       reNotify,
       dialogProof,
       showProof,
+      exportExcel,
+      exporting,
     };
   },
 });

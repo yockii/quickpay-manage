@@ -30,6 +30,9 @@ export default boot(({
     return Promise.reject(error)
   })
   api.interceptors.response.use(response => {
+    if (response.config.responseType === 'blob') {
+      return response
+    }
     return response.data
   }, error => {
     if (error.response.status === 401) {

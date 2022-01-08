@@ -23,6 +23,13 @@ const payoutOrder = {
   },
   renotify: function (id) {
     return api.put(`/api/v1/payoutOrder/reNotify?id=${id}`)
+  },
+  export: function (params) {
+    return api.get('/api/v1/payoutOrder/export', {
+      params,
+      responseType: 'blob',
+      timeout: 30 * 60 * 1000
+    })
   }
 }
 
