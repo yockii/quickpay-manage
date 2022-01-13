@@ -371,6 +371,7 @@ export default defineComponent({
           channelCode: condition.value.channelCode,
           tradeId: condition.value.tradeId,
           merchantName: condition.value.merchantName,
+          remark: condition.value.remark,
         });
         if (resp.code === 0) {
           rows.value = resp.data.items || [];

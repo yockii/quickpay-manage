@@ -617,7 +617,7 @@ export default defineComponent({
     });
     function openIncreaseAmountDialog(row) {
       increaseInstance.value.id = row.id;
-      increaseInstance.value.merchantName = row.merchantName;
+      increaseInstance.value.merchantName = row.name;
       increaseInstance.value.amount = 0;
       increaseInstance.value.remark = "";
       dialogIncreaseAmount.value = true;
