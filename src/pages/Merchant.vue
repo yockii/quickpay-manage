@@ -74,6 +74,16 @@
               flat
               color="primary"
               round
+              icon="price_change"
+              @click="openIncreaseAmountDialog(props.row)"
+            >
+              <q-tooltip>{{ $t("addMoney") }}</q-tooltip>
+            </q-btn>
+
+            <q-btn
+              flat
+              color="primary"
+              round
               icon="recent_actors"
               :to="`/merchantAccount?merchantId=${props.row.id}&merchantName=${props.row.name}`"
             >
@@ -346,6 +356,28 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+
+  <q-dialog v-model="dialogIncreaseAmount">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{ $t("addMoney") }}</div>
+      </q-card-section>
+      <q-card-section>
+        {{ $t("addMoneyMessage") + increaseInstance.merchantName }}
+      </q-card-section>
+      <q-card-section>
+        <q-input :label="$t('addMoney')" v-model.number="increaseInstance.amount" />
+        <q-input
+          :label="$t('merchantChannel.remark')"
+          v-model="increaseInstance.remark"
+        />
+      </q-card-section>
+      <q-card-actions>
+        <q-btn flat :label="$t('cancel')" v-close-popup />
+        <q-btn :label="$t('confirm')" @click="addMoney" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -576,6 +608,38 @@ export default defineComponent({
       { label: $t("unavailable"), value: -1 },
     ]);
 
+    const dialogIncreaseAmount = ref(false);
+    const increaseInstance = ref({
+      id: "",
+      merchantName: "",
+      amount: 0,
+      remark: "",
+    });
+    function openIncreaseAmountDialog(row) {
+      increaseInstance.value.id = row.id;
+      increaseInstance.value.merchantName = row.merchantName;
+      increaseInstance.value.amount = 0;
+      increaseInstance.value.remark = "";
+      dialogIncreaseAmount.value = true;
+    }
+
+    function addMoney() {
+      merchant
+        .incr({
+          id: increaseInstance.value.id,
+          amount: parseInt(increaseInstance.value.amount * 100),
+          remark: increaseInstance.value.remark,
+        })
+        .then((resp) => {
+          if (resp.code === 0) {
+            $q.dialog({ message: $t("success") });
+            getData({ pagination: pagination.value });
+          } else {
+            $q.dialog({ message: $t("failed") });
+          }
+        });
+    }
+
     onMounted(() => {
       getData({ pagination: pagination.value });
     });
@@ -598,6 +662,10 @@ export default defineComponent({
       remove,
       autoReconciliation,
       statusOptions,
+      dialogIncreaseAmount,
+      increaseInstance,
+      openIncreaseAmountDialog,
+      addMoney,
     };
   },
 });

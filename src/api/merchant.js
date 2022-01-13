@@ -20,7 +20,10 @@ const merchant = {
   },
   payoutReconciliation: function (id) {
     return api.put(`/api/v1/merchant/payoutReconciliation/${id}`)
-  }
+  },
+  incr: function (data) {
+    return api.put('/api/v1/merchant/incr', data)
+  },
 }
 
 export { merchant }
