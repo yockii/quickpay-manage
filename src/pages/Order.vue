@@ -10,6 +10,7 @@
       <q-input v-model="condition.tradeId" :label="$t('order.tradeId')" />
       <q-input v-model="condition.channelCode" :label="$t('order.channelCode')" />
       <q-input v-model="condition.merchantName" :label="$t('order.merchantName')" />
+      <q-input v-model="condition.remark" :label="$t('order.remark')" />
       <!-- <q-space /> -->
       <q-btn class="self-end" icon="search" @click="getData({ pagination })">
         <q-tooltip>{{ $t("search") }}</q-tooltip>
@@ -47,6 +48,16 @@
               @click="openInfoDialog(props.row)"
             >
               <q-tooltip>{{ $t("showDetail") }}</q-tooltip>
+            </q-btn>
+
+            <q-btn
+              flat
+              color="primary"
+              round
+              icon="update"
+              @click="openUpdateDialog(props.row)"
+            >
+              <q-tooltip>{{ $t("update") }}</q-tooltip>
             </q-btn>
           </q-td>
         </q-tr>
@@ -185,6 +196,21 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+
+  <q-dialog v-model="dialogUpdate">
+    <q-card style="width: 600px; max-width: 80vw" class="q-px-sm q-pb-md">
+      <q-card-section>
+        <div class="text-h6">{{ $t("update") }}</div>
+      </q-card-section>
+      <q-card-section>
+        <q-input :label="$t('order.remark')" v-model="instance.remark" />
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat :label="$t('cancel')" v-close-popup />
+        <q-btn :label="$t('confirm')" @click="update" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -302,6 +328,7 @@ export default defineComponent({
       channelCode: "",
       tradeId: "",
       merchantName: "",
+      remark: "",
     });
     const instance = ref({
       id: "",
@@ -365,6 +392,28 @@ export default defineComponent({
       dialogInfo.value = true;
     }
 
+    const dialogUpdate = ref(false);
+    function openUpdateDialog(row) {
+      setInstance(row);
+      dialogUpdate.value = true;
+    }
+    async function update() {
+      try {
+        const resp = await payOrder.update({
+          id: instance.value.id,
+          remark: instance.value.remark,
+        });
+        if (resp.code === 0) {
+          $q.dialog({ message: $t("success") });
+          dialogUpdate.value = false;
+          getData({ pagination: pagination.value });
+        } else if (resp.code === -10005) {
+          $.dialog({ message: $t("duplicate") });
+        }
+      } finally {
+      }
+    }
+
     onMounted(() => {
       getData({ pagination: pagination.value });
     });
@@ -378,6 +427,9 @@ export default defineComponent({
       getData,
       dialogInfo,
       openInfoDialog,
+      dialogUpdate,
+      openUpdateDialog,
+      update,
     };
   },
 });
