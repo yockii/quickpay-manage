@@ -747,6 +747,7 @@ export default defineComponent({
     const dialogUpdate = ref(false);
     function openUpdateDialog(row) {
       setInstance(row);
+      updateSubChannels();
       dialogUpdate.value = true;
     }
     async function update() {
