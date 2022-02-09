@@ -247,6 +247,12 @@ export default defineComponent({
         format: (val) => `${val}`,
       },
       {
+        name: "utr",
+        label: "UTR",
+        align: "left",
+        field: (row) => row.utr,
+      },
+      {
         name: "tradeId",
         label: $t("order.tradeId"),
         align: "center",
