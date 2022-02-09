@@ -490,6 +490,7 @@
       </q-card-section>
       <q-card-section>
         <q-input :label="$t('addMoney')" v-model.number="increaseInstance.amount" />
+        <q-input label="UTR" v-model="increaseInstance.utr" />
         <q-input
           :label="$t('merchantChannel.remark')"
           v-model="increaseInstance.remark"
@@ -815,6 +816,7 @@ export default defineComponent({
       channelName: "",
       subChannelName: "",
       amount: 0,
+      utr: "",
       remark: "",
     });
     function openIncreaseAmountDialog(row) {
@@ -829,6 +831,7 @@ export default defineComponent({
       increaseInstance.value.channelName = channelName;
       increaseInstance.value.subChannelName = row.subChannelName;
       increaseInstance.value.amount = 0;
+      increaseInstance.value.utr = "";
       increaseInstance.value.remark = "";
       dialogIncreaseAmount.value = true;
     }
@@ -838,6 +841,7 @@ export default defineComponent({
         .incr({
           id: increaseInstance.value.id,
           amount: parseInt(increaseInstance.value.amount * 100),
+          utr: increaseInstance.value.utr,
           remark: increaseInstance.value.remark,
         })
         .then((resp) => {
@@ -845,7 +849,7 @@ export default defineComponent({
             $q.dialog({ message: $t("success") });
             getData({ pagination: pagination.value });
           } else {
-            $q.dialog({ message: $t("failed") });
+            $q.dialog({ message: $t("failed") + resp.msg });
           }
         });
     }
