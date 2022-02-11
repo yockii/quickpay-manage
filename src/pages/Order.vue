@@ -10,7 +10,7 @@
       <q-input v-model="condition.tradeId" :label="$t('order.tradeId')" />
       <q-input v-model="condition.channelCode" :label="$t('order.channelCode')" />
       <q-input v-model="condition.merchantName" :label="$t('order.merchantName')" />
-      <q-input v-model="condition.remark" :label="$t('order.remark')" />
+      <q-input v-model="condition.utr" :label="UTR" />
       <!-- <q-space /> -->
       <q-btn class="self-end" icon="search" @click="getData({ pagination })">
         <q-tooltip>{{ $t("search") }}</q-tooltip>
@@ -334,7 +334,7 @@ export default defineComponent({
       channelCode: "",
       tradeId: "",
       merchantName: "",
-      remark: "",
+      utr: "",
     });
     const instance = ref({
       id: "",
@@ -348,6 +348,7 @@ export default defineComponent({
       fee: 0,
       channelFee: 0,
       payUser: "",
+      utr: "",
       remark: "",
       payerName: "",
       payerMobile: "",
@@ -377,7 +378,7 @@ export default defineComponent({
           channelCode: condition.value.channelCode,
           tradeId: condition.value.tradeId,
           merchantName: condition.value.merchantName,
-          remark: condition.value.remark,
+          utr: condition.value.utr,
         });
         if (resp.code === 0) {
           rows.value = resp.data.items || [];
